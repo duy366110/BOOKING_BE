@@ -3,7 +3,7 @@ const ModelLocation = require("../../model/model-location");
 const { validationResult } = require("express-validator");
 const path = require('path');
 const fs = require('fs');
-const ObjectId = mongodb.ObjectId;
+const UtilCloudinary = require("../../util/util.cloudinary");
 
 class ControllerLocation {
     constructor() { }
@@ -76,7 +76,7 @@ class ControllerLocation {
                 let paths = [];
                 if(files.length) {
                     paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                        return image.path? image.path : '';
                     })
                 }
 
@@ -154,9 +154,12 @@ class ControllerLocation {
                 // THỰC HIỆN XOÁ ẢNH TRƯỚC KHI XOÁ MODEL
                 if(locationInfor.images.length) {
                     for(let image of locationInfor.images) {
-                        let fileExists = fs.existsSync(path.join(__dirname, "../../", "public", image));
-                        if(fileExists) {
-                            fs.unlinkSync(path.join(__dirname, "../../", "public", image));
+                        let imageName = image.split('/').splice(-1).join('').split(".")[0];
+
+                        // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
+                        let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                        if(status) {
+                            await UtilCloudinary.destroy(`booking/${imageName}`);
                         }
                     }
                 }
@@ -185,19 +188,27 @@ class ControllerLocation {
                 let { id, photo } = req.body;
                 let locationInfor = await ModelLocation.findById(id);
     
-                let photoPath = path.join(__dirname, "../../", "public", photo);
-    
                 // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-                let imageExists = fs.existsSync(photoPath);
-                if(imageExists) {
-                    fs.unlinkSync(photoPath);
+                if(locationInfor.images.length) {
+
+                    for(let image of locationInfor.images) {
+                        if(image === photo) {
+                            let imageName = image.split('/').splice(-1).join('').split(".")[0];
+
+                            // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
+                            let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                            if(status) {
+                                await UtilCloudinary.destroy(`booking/${imageName}`);
+                                break;
+                            }
+                        }
+                    }
                 }
     
                 // THỰC HIỆN XOÁ ẢNH TRONG MODEL
                 locationInfor.images = locationInfor.images.filter((image) => image !== photo);
                 await locationInfor.save();
                 res.status(200).json({status: true, messgae: 'Delete photo location successfully'});
-    
     
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
