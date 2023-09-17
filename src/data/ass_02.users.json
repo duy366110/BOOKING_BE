@@ -1,0 +1,103 @@
+[{
+  "_id": {
+    "$oid": "64d5edaf51bf582d55c40d98"
+  },
+  "username": "Duy Nguyen",
+  "fullname": "Nguyen Phuong Duy",
+  "email": "duynguyen@gmail.com",
+  "password": "$2a$12$UuRwkYngssUjKBN7EqIQXeVYaM3KXAknh7lrFC3wgw3dvms6x8DNm",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5451bf582d55c40d88"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d5ee6e51bf582d55c40db5"
+  },
+  "username": "Pham Khanh",
+  "fullname": "Tran Pham Khanh",
+  "email": "khanhpham@gmail.com",
+  "password": "$2a$12$MdnpSs8LsP3QZ1vxc9IU3O6J3H4wLn6c70F/34xKxZGONPsJvqsNK",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "__v": 2,
+  "bookings": [
+    {
+      "$oid": "64e36d0121e363de90fa03b0"
+    },
+    {
+      "$oid": "64e36eaa21e363de90fa03dd"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64d6083ea4f46b48d0a4f092"
+  },
+  "username": "Phuong Duy",
+  "fullname": "Nguyen Phuong Duy",
+  "email": "phuongduy@gmail.com",
+  "password": "$2a$12$ViNVpJmcnH7l5qt1Y8qP4.nwH4SEaQSoSEMJbKZQROxMuSvfJoL2G",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5451bf582d55c40d88"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e3316d5956f60c6b457994"
+  },
+  "username": "",
+  "fullname": "",
+  "email": "hoangkhai@gmail.com",
+  "password": "$2a$12$Do36zrSPf73FEe4QTMFMYOWAvGk4f3LOsJLG5O4IW5Y5tMr10yE.6",
+  "phonenumber": "",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "bookings": [
+    {
+      "$oid": "64e361d04e2ba7b4822eb64d"
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "64e4c410c6faf2e6a9313fa2"
+  },
+  "username": "Thanh Phong",
+  "fullname": "Tran",
+  "email": "thanhphong@gmail.com",
+  "password": "$2a$12$/S4rU0SYc19H2dPaxHMIM.jlSTsio/HpYCy9msSZpDMDhhlpQcjnK",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "bookings": [
+    {
+      "$oid": "64e4c467c6faf2e6a9313fcd"
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "64e4c411c6faf2e6a9313fa6"
+  },
+  "username": "Thanh Phong",
+  "fullname": "Tran",
+  "email": "thanhphong@gmail.com",
+  "password": "$2a$12$Q/USxvlF0GYrwXuCG2JQxujBUKKu6JD5boNOSRga8/y/DVwzDxiUq",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "bookings": [],
+  "__v": 0
+}]

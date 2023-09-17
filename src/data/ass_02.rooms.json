@@ -1,0 +1,264 @@
+[{
+  "_id": {
+    "$oid": "64dc7748417b3d75444a0045"
+  },
+  "title": "2 Bed Room",
+  "price": {
+    "$numberDecimal": "200"
+  },
+  "maxPeople": 3,
+  "desc": "Aparthotel Stare Miasto is situated in the very centre of Kraków’s Old Town, just 120 metres from the Main Market Square. It features spacious modern apartments with free WiFi.",
+  "roomNumbers": [
+    "101",
+    "102"
+  ],
+  "images": [
+    "images/0.6875179052894187429281.jpg",
+    "images/0.497329714711213262808438.jpg",
+    "images/0.6142969513654994106201924.jpg",
+    "images/0.744983120189937369585204.jpg",
+    "images/0.5486898047444737119582171.jpg",
+    "images/0.96826145291239587428762.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db42bc2e873c8fdcf5606f"
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "64dc776b417b3d75444a0049"
+  },
+  "title": "1 Bed Room",
+  "price": {
+    "$numberDecimal": "150"
+  },
+  "maxPeople": 2,
+  "desc": "Situated in Kraków in the Lesser Poland region, 500 metres to the main train station, Cracow Central Aparthotel features accommodation with free WiFi.",
+  "roomNumbers": [
+    "202"
+  ],
+  "images": [
+    "images/0.04046600402730749144694036.jpg",
+    "images/0.8164712397851726144695416.jpg",
+    "images/0.31355637829061456144695399.jpg",
+    "images/0.34950945909129616241114110.jpg",
+    "images/0.862732748443260587442061.jpg",
+    "images/0.01614815067925668241114146.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43262e873c8fdcf56083"
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "64dc778d417b3d75444a004d"
+  },
+  "title": "Basement Double Room",
+  "price": {
+    "$numberDecimal": "600"
+  },
+  "maxPeople": 2,
+  "desc": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+  "roomNumbers": [
+    "101",
+    "102"
+  ],
+  "images": [
+    "images/0.771493925477506838913922.jpg",
+    "images/0.61177198460722657945454.jpg",
+    "images/0.799841235333580938861609.jpg",
+    "images/0.3721668790550407661568482.jpg",
+    "images/0.900573427351460757945474.jpg",
+    "images/0.6269689916170484225023485.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43772e873c8fdcf5608e"
+    }
+  ],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "64dc77b5417b3d75444a0051"
+  },
+  "title": "Superior basement room",
+  "price": {
+    "$numberDecimal": "700"
+  },
+  "maxPeople": 2,
+  "desc": "Set in Kraków, 800 metres from Town Hall Tower and less than 1 km from the centre, Golden Queen Apartments offers air-conditioned accommodation with free WiFi, and a terrace.",
+  "roomNumbers": [
+    "202",
+    "203",
+    "205"
+  ],
+  "images": [
+    "images/0.6870950357691052344121913.jpg",
+    "images/0.38129179876738295269379468.jpg",
+    "images/0.6645591726297146344121150.jpg",
+    "images/0.9020300122643883269372477.jpg",
+    "images/0.29497146945614894270434609.jpg",
+    "images/0.2056755543731139252433598.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43e72e873c8fdcf560ad"
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "64dc77e4417b3d75444a0055"
+  },
+  "title": "Deluxe Room",
+  "price": {
+    "$numberDecimal": "700"
+  },
+  "maxPeople": 2,
+  "desc": "Welcome drink, Coffee & tea, Express check-in, Free Premium Wifi, Free WiFi, Drinking water",
+  "roomNumbers": [
+    "303",
+    "403",
+    "404"
+  ],
+  "images": [
+    "images/0.6114778386792592484103098.jpg",
+    "images/0.9497243590005726484103030.jpg",
+    "images/0.7495203988078971484103028.jpg",
+    "images/0.4076197317778072484103032.jpg",
+    "images/0.4586615128572007484103064.jpg",
+    "images/0.5943811559595851484103033.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db42bc2e873c8fdcf5606f"
+    }
+  ],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "64dc780c417b3d75444a0059"
+  },
+  "title": "Deluxe Window",
+  "price": {
+    "$numberDecimal": "300"
+  },
+  "maxPeople": 2,
+  "desc": "Welcome drink, Coffee & tea, Express check-in, Free WiFi, Drinking water, Free fitness center access",
+  "roomNumbers": [
+    "101",
+    "102"
+  ],
+  "images": [
+    "images/0.6299369689085119455395572.jpg",
+    "images/0.9927262995797896455395525.jpg",
+    "images/0.6813250710469949455395517.jpg",
+    "images/0.8835065003464493478543030.jpg",
+    "images/0.1285164862064807455395601.jpg",
+    "images/0.27394682397800696449472626.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43262e873c8fdcf56083"
+    }
+  ],
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "64dc7838417b3d75444a005d"
+  },
+  "title": "Premier City View Room",
+  "price": {
+    "$numberDecimal": "425"
+  },
+  "maxPeople": 2,
+  "desc": "Mieszkanie 6-osobowe Kraków przy pływających basenach Zakrzówek is situated in the Debniki district of Kraków, 3.9 km from Wawel Royal Castle, 4.4 km from National Museum of Krakow and 4.4 km from...",
+  "roomNumbers": [
+    "202",
+    "203",
+    "205"
+  ],
+  "images": [
+    "images/0.7187665546192867483674818.jpg",
+    "images/0.2812609328552531483674892.jpg",
+    "images/0.4992706253286332483674837.jpg",
+    "images/0.8218563672666213484073662.jpg",
+    "images/0.9809260771884323483674921.jpg",
+    "images/0.6800730858840673483674627.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43772e873c8fdcf5608e"
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "64dc785d417b3d75444a0062"
+  },
+  "title": "Pay nothing until September 04, 2022",
+  "price": {
+    "$numberDecimal": "350"
+  },
+  "maxPeople": 2,
+  "desc": "Kraków centrum is set in the Podgórze district of Kraków, 4.8 km from St. Mary's Basilica, 4.9 km from Lost Souls Alley and 5.7 km from Wawel Royal Castle.",
+  "roomNumbers": [
+    "101",
+    "102"
+  ],
+  "images": [
+    "images/0.9601712975588603402853015.jpg",
+    "images/0.9324401943119904402853005.jpg",
+    "images/0.6484619480497815402853010.jpg",
+    "images/0.3904075824031601402853011.jpg",
+    "images/0.7912367654467296402853228.jpg",
+    "images/0.5584188883865446402853014.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db43e72e873c8fdcf560ad"
+    }
+  ],
+  "__v": 8
+},
+{
+  "_id": {
+    "$oid": "64dc788c417b3d75444a0066"
+  },
+  "title": "Budget Twin Room",
+  "price": {
+    "$numberDecimal": "350"
+  },
+  "maxPeople": 2,
+  "desc": "Set in the centre of Kraków, Krakow B&B - Old Town has well-equipped accommodation featuring free WiFi, 700 metres from St. Mary's Basilica and 700 metres from Lost Souls Alley.",
+  "roomNumbers": [
+    "202",
+    "203",
+    "205"
+  ],
+  "images": [
+    "images/0.1407043191136703286073392.jpg",
+    "images/0.722132691262898519476991.jpg",
+    "images/0.726275103730407886074448.jpg",
+    "images/0.321585813253310519477455.jpg",
+    "images/0.994636783897768186074485.jpg",
+    "images/0.385269380324894819475212.jpg"
+  ],
+  "hotels": [
+    {
+      "$oid": "64db42bc2e873c8fdcf5606f"
+    }
+  ],
+  "__v": 5
+}]

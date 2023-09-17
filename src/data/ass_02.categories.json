@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "64d9a2969400252223996c5f"
+  },
+  "title": "Hotel",
+  "desc": "",
+  "images": [
+    "images/0.389027650842465745450084.jpeg"
+  ],
+  "collections": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d9a2ba9400252223996c64"
+  },
+  "title": "Apartments",
+  "desc": "",
+  "images": [
+    "images/0.8732816508257555119467716.jpeg"
+  ],
+  "collections": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d9a2e29400252223996c6f"
+  },
+  "title": "Resorts",
+  "desc": "",
+  "images": [
+    "images/0.68265820427561245450090.jpeg"
+  ],
+  "collections": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d9a3059400252223996c74"
+  },
+  "title": "Villas",
+  "desc": "",
+  "images": [
+    "images/0.743848420274302845450113.jpeg"
+  ],
+  "collections": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d9a33a9400252223996c79"
+  },
+  "title": "Cabins",
+  "desc": "",
+  "images": [
+    "images/0.881861083878477345450095.jpeg"
+  ],
+  "collections": [],
+  "__v": 0
+}]

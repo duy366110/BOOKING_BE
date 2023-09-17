@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": "64d5ed5451bf582d55c40d88"
+  },
+  "name": "Admin",
+  "users": [
+    {
+      "$oid": "64d5edaf51bf582d55c40d98"
+    },
+    {
+      "$oid": "64d6083ea4f46b48d0a4f092"
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "name": "Client",
+  "users": [
+    {
+      "$oid": "64d5ee6e51bf582d55c40db5"
+    },
+    {
+      "$oid": "64e3316d5956f60c6b457994"
+    },
+    {
+      "$oid": "64e4c411c6faf2e6a9313fa6"
+    },
+    {
+      "$oid": "64e4c410c6faf2e6a9313fa2"
+    }
+  ],
+  "__v": 15
+},
+{
+  "_id": {
+    "$oid": "64d5ed7351bf582d55c40d8e"
+  },
+  "name": "Editor",
+  "users": [],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "64e36f2e21e363de90fa03ef"
+  },
+  "name": "Owner",
+  "users": [],
+  "__v": 0
+}]
