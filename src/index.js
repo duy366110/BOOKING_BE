@@ -17,24 +17,6 @@ const app = express();
 app.use(helmet());
 app.use(compression());
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'public', 'images'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Math.random().toString()}${file.originalname}`);
-    }
-})
-
-const fileFilter = (req, file, cb) => {
-    if((file.mimetype == 'image/png') || (file.mimetype == 'image/jpeg') || (file.mimetype == 'image/jpg') || (file.mimetype == 'image/jpng')) {
-        cb(null, true);
-
-    } else {
-        cb(null, false);
-    }
-}
-
 app.use(express.static(path.join(__dirname, "public")));
 app.use(MiddlewareCors.cors);
 
