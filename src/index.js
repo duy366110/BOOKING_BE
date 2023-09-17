@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser =  require("body-parser");
+const helmet = require("helmet");
 const multer = require("multer");
 const path = require('path');
 
-const mongodb = require("./util/db");
+require("./util/util.db");
 const MiddlewareCors = require("./middleware/middleware-cors");
 const RouterAdmin = require("./router/admin/router");
 const RouterClient = require("./router/client/router");
@@ -11,6 +12,7 @@ const RouterCommon = require("./router/common/router");
 
 
 const app = express();
+app.use(helmet());
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, 'public', 'images'));
@@ -41,10 +43,4 @@ app.use("/api/admin", RouterAdmin);
 app.use("/api/client", RouterClient);
 app.use("/api", RouterCommon);
 
-mongodb.connect(() => {
-    app.listen(process.env.PORT || 5000, (error) => {
-        if(error) console.log('Start server failed');
-        console.log("Start server successfully");
-    })
-    
-})
+module.exports = app;
