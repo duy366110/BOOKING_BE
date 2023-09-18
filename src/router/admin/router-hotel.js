@@ -4,21 +4,20 @@ const ModelHotel = require("../../model/model-hotel");
 const MiddlewareHotel = require("../../middleware/middleware-hotel");
 const ControllerHotel = require("../../controller/admin/controller-hotel");
 
-// ROUTER ADMIN LẤY THÔNG TIN TẤT CẢ HOTEL HIỆN CÓ
-router.get('/', ControllerHotel.findHotels);
+// ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH CATEGORY
+router.get("/:limit/:start", ControllerHotel.getHotel);
+
+// ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
+router.get("/amount", ControllerHotel.getAmount);
 
 // ROUTER ADMIN LẤY THÔNG TIN HOTEL THÔNG QUA ID HOTEL
-router.get('/:hotel', ControllerHotel.findHotelById);
-
-// ROUTER ADMIN LẤY THÔNG TIN HOTEL THÔNG QUA ID THỰC HIỆN CẬP NHẬT
-// router.get("/information/:hotel", ControllerHotel.findHotelEdit);
+router.get('/:hotel', ControllerHotel.getHotelById);
 
 // ROUTER ADMIN TẠO MỚI THÔNG TIN HOTEL
 router.post('/', [
     body('name').notEmpty().withMessage('Name not empty'),
     body('type').notEmpty().withMessage('Type not empty'),
     body('location').notEmpty().withMessage('Location not empty'),
-    body('price').notEmpty().withMessage('Price not empty'),
     body('address').notEmpty().withMessage('Address not empty'),
 
 ],
@@ -32,7 +31,6 @@ router.patch('/', [
     body('name').notEmpty().withMessage('Name not empty'),
     body('type').notEmpty().withMessage('Type not empty'),
     body('location').notEmpty().withMessage('Location not empty'),
-    body('price').notEmpty().withMessage('Price not empty'),
     body('address').notEmpty().withMessage('Address not empty'),
 ],
 MiddlewareHotel.hotelFindById,

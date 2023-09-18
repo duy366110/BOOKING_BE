@@ -1,0 +1,172 @@
+"use strict"
+const ModelHotel = require("../model/model-hotel");
+const UtilCloudinary = require("../util/util.cloudinary");
+
+class ServiceCategory {
+
+    constructor() { }
+
+    // LẤY DANH SÁCH HOTEL
+    async getLimit(limit, start, cb) {
+        try {
+            let hotels = await ModelHotel.find({}).limit(limit).skip(start).select(['name', 'city', 'type', 'rooms']).populate(['city', 'type']).lean();
+            cb({status: true, message: 'Get hotels successfully', hotels});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // LẤY DANH SÁCH LOCATION
+    async getAll(cb) {
+        try {
+            let categories = await ModelCategory.find({}).lean();
+            cb({status: true, message: 'Get categories successfully', categories});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // LẤY DANH PHẦN TỬ THEO ID
+    async getById(id, cb) {
+        try {
+            let hotel = await ModelHotel.findById(id).lean();
+            cb({status: true, message: 'Get hotel successfully', hotel});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // LẤY SỐ LƯỢNG HOTEL
+    async getAmount(cb) {
+        try {
+            let amount = await ModelHotel.find({}).count().lean();
+            cb({status: true, message: 'Get amount hotel successfully', amount});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // TẠO MỚI HOTEL
+    async create(hotel = {}, images, location, category, cb) {
+        try {
+
+            let hotelInfor = await ModelHotel.create({
+                name: hotel.name, address: hotel.address,
+                type: category, city: location,
+                distance: hotel.distance, desc: hotel.desc,
+                featured: hotel.featurefeature, images
+            });
+
+              if(hotelInfor) {
+                    location.collections.push(hotelInfor);
+                    category.collections.push(hotelInfor);
+
+                    await location.save();
+                    await category.save();
+                    cb({status: true, message: 'Create hotel successfully'});
+              }
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // CẬP NHẬT CATEGORY
+    async update(category = {}, images = [], cb) {
+        try {
+            if(images.length) {
+                for(let image of images) {
+                    category.model.images.push(image);
+                }
+            }
+
+            category.model.title = category.title;
+            category.model.updateDate = Date.now;
+            await category.model.save();
+
+            cb({status: true, message: 'Update category successfully'});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // XOÁ CATEGORY
+    async delete(category = {}, cb) {
+        try {
+
+            if(category.model.images.length) {
+                let images = [];
+                for(let image of category.model.images) {
+                    let imageName = image.split('/').splice(-1).join('').split(".")[0];
+
+                    // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
+                    let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                    if(status) {
+                        images.push(`booking/${imageName}`);
+                    }
+                }
+                
+                if(images.length) {
+                    await UtilCloudinary.destroyMany(images);
+                }
+            }
+
+            await category.model.deleteOne();
+            cb({status: true, message: 'Update category successfully'});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+
+    // XOÁ ẢNH CATEGORY
+    async deleteImage(category = {}, photo = '', cb) {
+        try {
+
+            // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
+            if(category.model.images.length) {
+
+                for(let image of category.model.images) {
+                    if(image === photo) {
+                        let imageName = image.split('/').splice(-1).join('').split(".")[0];
+
+                        // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
+                        let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                        if(status) {
+                            await UtilCloudinary.destroy(`booking/${imageName}`);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // THỰC HIỆN XOÁ FILE TRONG DB
+             category.model.images =  category.model.images.filter((image) => image !== photo);
+            await  category.model.save();
+
+            cb({status: true, message: 'Delete photo image successfully'});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+}
+
+module.exports = new ServiceCategory();
+
+
+  
