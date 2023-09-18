@@ -10,7 +10,7 @@ class MiddlewareHotel {
     hotelFindById = async(req, res, next) => {
         try {
             let { hotel } = req.body;
-            let hotelInfor = await ModelHotel.findById(hotel).populate(["city", "type"]);
+            let hotelInfor = await ModelHotel.findById(hotel).populate(["city", "type"]).exec();
             req.hotel = hotelInfor;
             next();
 

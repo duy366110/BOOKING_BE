@@ -76,7 +76,7 @@ class ServiceCategory {
             }
 
             category.model.title = category.title;
-            category.model.updateDate = Date.now;
+            category.model.updateDate = new Date();
             await category.model.save();
 
             cb({status: true, message: 'Update category successfully'});

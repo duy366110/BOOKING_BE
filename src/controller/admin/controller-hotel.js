@@ -3,33 +3,67 @@ const path = require('path');
 const fs = require('fs');
 const ModelHotel = require("../../model/model-hotel");
 const ModelRoom = require("../../model/model-room");
+const ServiceHotel = require("../../services/service.hotel");
 
 class ControllerHotel {
 
     constructor() { }
 
-    // ADMIN LẤY THÔNG TIN CÁC HOTELS HIỆN CÓ
-    findHotels = async (req, res, next) => {
+    // LẤY DANH SÁCH HOTEL
+    getHotel = async (req, res, next) => {
         try {
-            let hotelsInfor = await ModelHotel.find({}).select(['name', 'city', 'type', 'price', 'rooms']).populate(['city', 'type']);
-            res.status(200).json({status: true, message: 'Find hotel successfully', hotels: hotelsInfor});
+            let { limit, start} = req.params;
+            await ServiceHotel.getLimit(limit, start, (information) => {
+                let { status, message, hotels, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotels});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
-
         }
     }
 
-    // ADMIN LẤY THÔNG TIN HOTEL QUA ID
-    findHotelById = async (req, res, next) => {
+    // PHƯƠNG THỨC TÌM HOTEL THÔNG QUA ID
+    getHotelById = async(req, res, next) => {
         try {
             let { hotel } = req.params;
-            let hotelInfor = await ModelHotel.findById(hotel);
-            res.status(200).json({status: true, message: 'Find hotel successfully', hotel: hotelInfor});
+            await ServiceHotel.getById(hotel, (information) => {
+                let { status, message, hotel, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotel});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});;
+        }
+    }
+
+    // LÂY SỐ LƯỢNG HOTEL HIỆN CÓ
+    getAmount = async (req, res, next) => {
+        try {
+            await ServiceHotel.getAmount((information) => {
+                let { status, message, amount, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, amount});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
-
         }
     }
 
@@ -43,44 +77,28 @@ class ControllerHotel {
         } else {
             try {
 
-                let { name, address, distance, desc, feature, price } = req.body;
+                let { name, address, distance, desc, feature } = req.body;
                 let { location , category} = req;
                 let { files } = req;
 
-                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL.
-                let paths = [];
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
                     })
                 }
-                
+
                 // TẠO MỚI THÔNG TIN HOTEL
-                let hotelInfor = await ModelHotel.create({
-                    name, address,
-                    type: category,
-                    city: location,
-                    distance, desc,
-                    featured: feature,
-                    price, images: paths
-                });
+                await ServiceHotel.create({name, address, distance, desc, feature}, images, location, category, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // GỬI TRẢ THÔNG TIN TRẠNG THÁI VỀ ADMIN
-                if(hotelInfor) {
-                    location.collections.push(hotelInfor);
-                    category.collections.push(hotelInfor);
-
-                    await location.save();
-                    await category.save();
-
-                    // TẠO MỚI HOTEL THÀNH CÔNG
-                    res.status(200).json({status: true, message: 'Create hotel successfully'});
-
-                } else {
-
-                    // TẠO MỚI HOTEL KHÔNG THÀNH CÔNG
-                    res.status(406).json({status: false, message: 'Create hotel failed'});
-                }
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
@@ -98,63 +116,35 @@ class ControllerHotel {
 
         } else {
             try {
-                let { name, address, distance, desc, feature, price } = req.body;
+                let { name, address, distance, desc, feature } = req.body;
                 let { hotel, location , category} = req;
                 let { files } = req;
 
                 if(hotel) {
-                    // THỰC HIỆN TÌM KIẾM VÀ CẬP NHẬT
-                    // 1) CẬP NHẬT CITY
-                    if(hotel.city._id.toString() !== location._id.toString()) {
-                        // THỰC HIỆN XOÁ LIÊN KẾT CŨ
-                        let oldLocation = hotel.city;
-                        oldLocation.collections = oldLocation.collections.filter((city) => city._id.toString() !== hotel._id.toString());
-                        await oldLocation.save();
-
-                        // CẬP NHẬT LIÊN KẾT MỚI
-                        location.collections.push(hotel);
-                        await location.save();
-
-                        // CẬP NHẬT LOCATION MỚI CHO HOTEL
-                        hotel.city = location;
-                    }
-
-                    // 2) CẬP NHẬT TYPE
-                    if(hotel.type._id.toString() !== category._id.toString()) {
-                        // THỰC HIỆN XOÁ LIÊN KẾT CŨ
-                        let oldType = hotel.type;
-                        oldType.collections = oldType.collections.filter((type) => type.toString() !== hotel._id.toString());
-                        await oldType.save();
-
-                        // CẬP NHẬT LIÊN KẾT MỚI
-                        category.collections.push(hotel);
-                        await category.save();
-
-                        // CẬP NHẬT CATEGORY MỚI CHO HOTEL
-                        hotel.type = category;
-                    }
-
-                    // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL.
+                    // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL
+                    let images = [];
                     if(files.length) {
-                        files.map((image) => {
-                            hotel.images.push(`images/${image.filename}`);
+                        images = files.map((image) => {
+                            return image.path? image.path : '';
                         })
                     }
 
-                    // 3) CẬP NHẬT INFOR HOTEL
-                    hotel.name = name;
-                    hotel.address = address;
-                    hotel.distance = distance;
-                    hotel.desc = desc;
-                    hotel.feature = feature;
-                    hotel.price = price;
-
-                    await hotel.save();
-                    res.status(200).json({status: true, message: 'Update hotel information successfully'});
+                    await ServiceHotel.update({
+                        model: hotel, name, address, distance, desc, feature
+                    }, images, location, category, (information) => {
+                        let { status, message, error } = information;
+                        if(status) {
+                            res.status(200).json({status: true, message});
+    
+                        } else {
+                            res.status(406).json({status: false, message, error});
+                        }
+                    })
 
                 } else {
                     res.status(404).json({status: false, message: 'Not found hotel'});
                 }
+
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
                 res.status(500).json({status: false, message: "Internal server failed"});
@@ -173,28 +163,15 @@ class ControllerHotel {
             try {
                 let { hotel } = req;
                 if(hotel) {
-                    let {city, type} = hotel;
-
-                    // THỰC HIỆN XOÁ LIÊN KẾT HOTEL VỚI CITY - LOCATION
-                    city.collections = city.collections.filter((elm) => elm.toString() !== hotel._id.toString());
-                    await city.save();
-
-                    // THỰC HIỆN XOÁ LIÊN KẾT HOTEL VỚI TYPE = CATEGORY
-                    type.collections = type.collections.filter((elm) => elm.toString() !== hotel._id.toString());
-                    await type.save();
-
-                    // THỰC HIỆN XOÁ HÌNH ẢNH
-                    if(hotel.images.length) {
-                        hotel.images.forEach((photo) => {
-                            if(fs.existsSync(path.join(__dirname, "../../", 'public', photo))) {
-                                fs.unlinkSync(path.join(__dirname, "../../", 'public', photo));
-                            }
-                        })
-                    }
-
-                    // THỰC HIẸN XOÁ HOTEL
-                    await hotel.deleteOne();
-                    res.status(200).json({status: true, message: "Delete hotel successfully"});
+                    await ServiceHotel.delete({model: hotel}, (information) => {
+                        let { status, message, error } = information;
+                        if(status) {
+                            res.status(200).json({status: true, message});
+    
+                        } else {
+                            res.status(406).json({status: false, message, error});
+                        }
+                    })
 
                 } else {
                     res.status(404).json({status: false, message: 'Not found hotel'});

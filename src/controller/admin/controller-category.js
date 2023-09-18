@@ -23,6 +23,7 @@ class ControllerCategory {
             });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
