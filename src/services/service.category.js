@@ -1,16 +1,16 @@
 "use strict"
-const ModelLocation = require("../model/model-location");
+const ModelCategory = require("../model/model-category");
 const UtilCloudinary = require("../util/util.cloudinary");
 
-class ServiceLocation {
+class ServiceCategory {
 
     constructor() { }
 
     // LẤY DANH SÁCH LOCATION
     async getLimit(limit, start, cb) {
         try {
-            let locations = await ModelLocation.find({}).limit(limit).skip(start).lean();
-            cb({status: true, message: 'Get locations successfully', locations});
+            let categories = await ModelCategory.find({}).limit(limit).skip(start).lean();
+            cb({status: true, message: 'Get categories successfully', categories});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -21,8 +21,8 @@ class ServiceLocation {
     // LẤY DANH SÁCH LOCATION
     async getAll(cb) {
         try {
-            let locations = await ModelLocation.find({}).lean();
-            cb({status: true, message: 'Get locations successfully', locations});
+            let categories = await ModelCategory.find({}).lean();
+            cb({status: true, message: 'Get categories successfully', categories});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -33,8 +33,8 @@ class ServiceLocation {
     // LẤY DANH PHẦN TỬ THEO ID
     async getById(id, cb) {
         try {
-            let location = await ModelLocation.findById(id).lean();
-            cb({status: true, message: 'Get location location successfully', location});
+            let category = await ModelCategory.findById(id).lean();
+            cb({status: true, message: 'Get category category successfully', category});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -42,11 +42,11 @@ class ServiceLocation {
         }
     }
 
-    // LẤY SỐ LƯỢNG LOCATION
+    // LẤY SỐ LƯỢNG CATEGORY
     async getAmount(cb) {
         try {
-            let amount = await ModelLocation.find({}).count().lean();
-            cb({status: true, message: 'Get amount location successfully', amount});
+            let amount = await ModelCategory.find({}).count().lean();
+            cb({status: true, message: 'Get amount category successfully', amount});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -54,11 +54,11 @@ class ServiceLocation {
         }
     }
 
-    // TẠO MỚI LOCATION
-    async create(location, images, cb) {
+    // TẠO MỚI CATEGORY
+    async create(category = {}, images, cb) {
         try {
-            await ModelLocation.create({title: location.title, images});
-            cb({status: true, message: 'Create location successfully'});
+            await ModelCategory.create({title: category.title, images});
+            cb({status: true, message: 'Create category successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -66,20 +66,20 @@ class ServiceLocation {
         }
     }
 
-    // CẬP NHẬT LOCATION
-    async update(location = {}, images = [], cb) {
+    // CẬP NHẬT CATEGORY
+    async update(category = {}, images = [], cb) {
         try {
             if(images.length) {
                 for(let image of images) {
-                    location.model.images.push(image);
+                    category.model.images.push(image);
                 }
             }
 
-            location.model.title = location.title;
-            location.model.updateDate = Date.now;
-            await location.model.save();
+            category.model.title = category.title;
+            category.model.updateDate = Date.now;
+            await category.model.save();
 
-            cb({status: true, message: 'Update location successfully'});
+            cb({status: true, message: 'Update category successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -87,13 +87,13 @@ class ServiceLocation {
         }
     }
 
-    // XOÁ LOCATION
-    async delete(location = {}, cb) {
+    // XOÁ CATEGORY
+    async delete(category = {}, cb) {
         try {
 
-            if(location.model.images.length) {
+            if(category.model.images.length) {
                 let images = [];
-                for(let image of location.model.images) {
+                for(let image of category.model.images) {
                     let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                     // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
@@ -108,8 +108,8 @@ class ServiceLocation {
                 }
             }
 
-            await location.model.deleteOne();
-            cb({status: true, message: 'Update location successfully'});
+            await category.model.deleteOne();
+            cb({status: true, message: 'Update category successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -118,14 +118,14 @@ class ServiceLocation {
     }
 
 
-    // XOÁ ẢNH LOCATION
-    async deleteImage(location = {}, photo = '', cb) {
+    // XOÁ ẢNH CATEGORY
+    async deleteImage(category = {}, photo = '', cb) {
         try {
 
             // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-            if(location.model.images.length) {
+            if(category.model.images.length) {
 
-                for(let image of location.model.images) {
+                for(let image of category.model.images) {
                     if(image === photo) {
                         let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
@@ -140,8 +140,8 @@ class ServiceLocation {
             }
 
             // THỰC HIỆN XOÁ FILE TRONG DB
-             location.model.images =  location.model.images.filter((image) => image !== photo);
-            await  location.model.save();
+             category.model.images =  category.model.images.filter((image) => image !== photo);
+            await  category.model.save();
 
             cb({status: true, message: 'Delete photo image successfully'});
 
@@ -152,7 +152,7 @@ class ServiceLocation {
     }
 }
 
-module.exports = new ServiceLocation();
+module.exports = new ServiceCategory();
 
 
   

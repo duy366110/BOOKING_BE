@@ -7,13 +7,13 @@ const ControllerCategory = require("../../controller/admin/controller-category")
 router.get("/:limit/:start", ControllerCategory.getCategory);
 
 // ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
-router.get("/amount", ControllerCategory.getCategoryAmount);
+router.get("/amount", ControllerCategory.getAmount);
 
 //ROUTER TÌN CATEGORY THEO ID
-router.get("/:category", ControllerCategory.findCategoryById);
+router.get("/:category", ControllerCategory.getCategoryById);
 
 // ROUTER ADMIN LẤY DANH SÁCH CATEGORY
-router.get("/", ControllerCategory.findCategory);
+router.get("/", ControllerCategory.getCategoryAll);
 
 // ROUTER THÊM MỚI CATEGORY
 router.post("/",[

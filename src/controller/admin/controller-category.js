@@ -2,6 +2,7 @@ const ModelCategory = require("../../model/model-category");
 const { validationResult } = require("express-validator");
 const fs = require('fs');
 const path = require("path");
+const ServiceCategory = require("../../services/service.category");
 
 class ControllerCategory {
 
@@ -11,22 +12,14 @@ class ControllerCategory {
     getCategory = async (req, res, next) => {
         try {
             let { limit, start} = req.params;
-            let categoryInfor = await ModelCategory.find({}).limit(limit).skip(start).exec();
-            res.status(200).json({status: true, message: 'Get category successfull', categories: categoryInfor});
+            await ServiceCategory.getLimit(limit, start, (information) => {
+                let { status, message, categories, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, categories});
 
-        } catch (error) {
-            res.status(500).json({status: false, message: 'Internal server failed'});
-        }
-    }
-
-    // LÂY SỐ LƯỢNG CATERY HIỆN CÓ
-    getCategoryAmount = async (req, res, next) => {
-        try {
-            let amountCategory = await ModelCategory.find({}).count().exec();
-            res.status(200).json({
-                status: true,
-                message: 'Amount category successfully',
-                amount: amountCategory
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
             });
 
         } catch (error) {
@@ -34,24 +27,57 @@ class ControllerCategory {
         }
     }
 
-    // PHƯƠNG THỨC TÌM LOCATION THÔNG QUA ID
-    findCategoryById = async(req, res, next) => {
+    // PHƯƠNG THỨC LẤY DANH SÁCH LOCATION
+    getCategoryAll = async (req, res, next) => {
         try {
-            let { category } = req.params;
-            let categoryInfor = await ModelCategory.findById(category);
-            res.status(200).json({status: true, message: 'Find location successfully', category: categoryInfor });
+            await ServiceCategory.getAll((information) => {
+                let { status, message, categories, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, categories});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
-            res.status(500).json({status: false, message: 'Internal server failed',});;
+            res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // PHƯƠNG THỨC LẤY DANH SÁCH CATEGORY
-    findCategory = async (req, res, next) => {
+    // PHƯƠNG THỨC TÌM LOCATION THÔNG QUA ID
+    getCategoryById = async(req, res, next) => {
         try {
-            let categoriesInfor = await ModelCategory.find({});
-            res.status(200).json({status: true, message: 'Find category successfully', categories: categoriesInfor});
+            let { category } = req.params;
+            await ServiceCategory.getById(category, (information) => {
+                let { status, message, category, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, category});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});;
+        }
+    }
+
+    // LÂY SỐ LƯỢNG CATERY HIỆN CÓ
+    getAmount = async (req, res, next) => {
+        try {
+            await ServiceCategory.getAmount((information) => {
+                let { status, message, amount, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, amount});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
@@ -59,9 +85,7 @@ class ControllerCategory {
     }
 
     // ADMIN THÊM MỚI CATEGORY
-    createCategory = async(req, res, next) => {
-        let { title } = req.body;
-        let { files } =  req;
+    async createCategory(req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -69,25 +93,27 @@ class ControllerCategory {
 
         } else {
             try {
+                let { files } =  req;
+                let { title } = req.body;
 
-                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY.
-                let paths = [];
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
                     })
                 }
 
                 // TẠO MỚI THÔNG TIN CATEGORY
-                let status = await ModelCategory.create({title, images: paths});
+                await ServiceCategory.create({title}, images, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // GỬI STATUS VỀ ADMIN
-                if(status) {
-                    res.status(200).json({status: true, message: 'Create location successfully'});
-
-                } else {
-                    res.status(406).json({status: false, message: 'Create location failed'});
-                }
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (err) {
                 // PHƯƠNG THỨC LỖI
@@ -110,24 +136,23 @@ class ControllerCategory {
 
                 let categoryInfor = await ModelCategory.findById(category);
 
-                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY.
-                let paths = [];
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH LOCATION.
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
                     })
-
-                    // THỰC HIỆN THÊM PHOTO VÀO CATEGORY
-                    for(let path of paths) {
-                        categoryInfor.images.push(path);
-                    }
                 }
 
-                // THỰC HIỆN CẬP NHẬT THÔNG TIN VÀ GỬI TRẠNG THÁI VỀ ADMIN
-                categoryInfor.title = title;
-                await categoryInfor.save();
-                res.status(200).json({status: true, message: "Update information category successfully"});
+                await ServiceCategory.update({model: categoryInfor, title}, images, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
@@ -138,7 +163,6 @@ class ControllerCategory {
 
     // ADMIN DELETE CATEGORY
     deleteCategory = async (req, res, next) => {
-        let { category } = req.body;
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -146,22 +170,20 @@ class ControllerCategory {
 
         } else {
             try {
+                let { category } = req.body;
+
                 // THỰC HIỆN XOÁ CATEGORY THÔNG QUA ID
                 let categoryInfor = await ModelCategory.findById(category);
 
-                // THỰC HIỆN XOÁ ẢNH TRƯỚC KHI XOÁ MODEL
-                if(categoryInfor.images.length) {
-                    for(let image of categoryInfor.images) {
-                        let fileExists = fs.existsSync(path.join(__dirname, "../../", "public", image));
-                        if(fileExists) {
-                            fs.unlinkSync(path.join(__dirname, "../../", "public", image));
-                        }
-                    }
-                }
+                await ServiceCategory.delete({model: categoryInfor}, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // THỰC HIỆN XOÁ MODEL CATEGORY
-                await categoryInfor.deleteOne();
-                res.status(200).json({status: true, message: 'Delete category successfully'});                
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })               
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
@@ -182,20 +204,16 @@ class ControllerCategory {
 
                 let { id, photo } = req.body;
                 let categoryInfor = await ModelCategory.findById(id);
-    
-                let photoPath = path.join(__dirname, "../../", "public", photo);
-    
-                // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-                let imageExists = fs.existsSync(photoPath);
-                if(imageExists) {
-                    fs.unlinkSync(photoPath);
-                }
-    
-                // THỰC HIỆN XOÁ ẢNH TRONG MODEL
-                categoryInfor.images = categoryInfor.images.filter((image) => image !== photo);
-                await categoryInfor.save();
-                res.status(200).json({status: true, messgae: 'Delete photo category successfully'});
-    
+
+                await ServiceCategory.deleteImage({model: categoryInfor}, photo, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
     
             } catch (error) {
                 // PHƯƠNG THỨC LỖI

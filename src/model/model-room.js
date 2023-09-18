@@ -30,6 +30,14 @@ const ModelRoom = new Schema({
             default: ''
         }
     ],
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
+    },
     hotels: [
         {
             type: Schema.Types.ObjectId,

@@ -86,8 +86,6 @@ class ControllerLocation {
 
     // ADMIN TẠO LOCATION
     createLocation = async (req, res, next) => {
-        let { title } = req.body;
-        let { files } =  req;
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -95,6 +93,8 @@ class ControllerLocation {
 
         } else {
             try {
+                let { files } =  req;
+                let { title } = req.body;
 
                 // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH LOCATION.
                 let images = [];
@@ -163,7 +163,6 @@ class ControllerLocation {
 
     // ADMIN DELETE LOCATION
     deleteLocation = async (req, res, next) => {
-        let { location } = req.body;
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -171,6 +170,8 @@ class ControllerLocation {
 
         } else {
             try {
+                let { location } = req.body;
+                
                 // THỰC HIỆN XOÁ LOCATION THÔNG QUA ID
                 let locationInfor = await ModelLocation.findById(location);
                 await ServiceLocation.delete({model: locationInfor}, (information) => {

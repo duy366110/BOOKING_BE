@@ -26,6 +26,14 @@ const ModelUser = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'roles'
     },
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
+    },
     bookings: [
         {
             type: Schema.Types.ObjectId,
