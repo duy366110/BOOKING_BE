@@ -1,47 +1,63 @@
-const mongodb = require("mongodb");
+"use strict"
 const ModelLocation = require("../../model/model-location");
 const { validationResult } = require("express-validator");
-const path = require('path');
-const fs = require('fs');
-const UtilCloudinary = require("../../util/util.cloudinary");
 const ServiceLocation = require("../../services/service.location");
 
 class ControllerLocation {
     constructor() { }
 
     // LẤY DANH SÁCH LOCATION
-    getLocation = async (req, res, next) => {
+    getLocations = async (req, res, next) => {
         try {
             let { limit, start} = req.params;
-            let locationsInfor = await ModelLocation.find({}).limit(limit).skip(start).exec();
-            res.status(200).json({status: true, message: 'Get location successfull', locations: locationsInfor});
+            await ServiceLocation.getLimit(limit, start, (information) => {
+                let { status, message, locations, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, locations});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // LÂY SỐ LƯỢNG LOCATION HIỆN CÓ
-    getLocationAmount = async (req, res, next) => {
+    // PHƯƠNG THỨC LẤY DANH SÁCH LOCATION
+    getLocationAll = async (req, res, next) => {
         try {
-            let amountLocation = await ModelLocation.find({}).count().exec();
-            res.status(200).json({
-                status: true,
-                message: 'Amount location successfully',
-                amount: amountLocation
+            await ServiceLocation.getAll((information) => {
+                let { status, message, locations, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, locations});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
             });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
     // PHƯƠNG THỨC TÌM LOCATION THÔNG QUA ID
-    findLocationById = async(req, res, next) => {
+    getLocationById = async(req, res, next) => {
         try {
             let { location } = req.params;
-            let locationInfor = await ModelLocation.findById(location);
-            res.status(200).json({status: true, message: 'Find location successfully', location: locationInfor });
+            await ServiceLocation.getById(location, (information) => {
+                let { status, message, location, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, location});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -49,11 +65,18 @@ class ControllerLocation {
         }
     }
 
-    // PHƯƠNG THỨC LẤY DANH SÁCH LOCATION
-    findLocation = async (req, res, next) => {
+    // LÂY SỐ LƯỢNG LOCATION HIỆN CÓ
+    getAmount = async (req, res, next) => {
         try {
-            let locationsInfor = await ModelLocation.find({});
-            res.status(200).json({status: true, message: 'Find location successfully', locations: locationsInfor});
+            await ServiceLocation.getAmount((information) => {
+                let { status, message, amount, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, amount});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
@@ -122,7 +145,6 @@ class ControllerLocation {
 
                 await ServiceLocation.update({model: locationInfor, title}, images, (information) => {
                     let { status, message, error } = information;
-
                     if(status) {
                         res.status(200).json({status: true, message});
 
@@ -151,23 +173,15 @@ class ControllerLocation {
             try {
                 // THỰC HIỆN XOÁ LOCATION THÔNG QUA ID
                 let locationInfor = await ModelLocation.findById(location);
+                await ServiceLocation.delete({model: locationInfor}, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // THỰC HIỆN XOÁ ẢNH TRƯỚC KHI XOÁ MODEL
-                if(locationInfor.images.length) {
-                    for(let image of locationInfor.images) {
-                        let imageName = image.split('/').splice(-1).join('').split(".")[0];
-
-                        // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
-                        let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
-                        if(status) {
-                            await UtilCloudinary.destroy(`booking/${imageName}`);
-                        }
+                    } else {
+                        res.status(406).json({status: false, message, error});
                     }
-                }
-
-                // THỰC HIỆN XOÁ MODEL LOCATION
-                await locationInfor.deleteOne();
-                res.status(200).json({status: true, message: 'Delete location successfully'});                
+                })
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
@@ -188,29 +202,17 @@ class ControllerLocation {
 
                 let { id, photo } = req.body;
                 let locationInfor = await ModelLocation.findById(id);
-    
-                // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-                if(locationInfor.images.length) {
 
-                    for(let image of locationInfor.images) {
-                        if(image === photo) {
-                            let imageName = image.split('/').splice(-1).join('').split(".")[0];
+                await ServiceLocation.deleteImage({model: locationInfor}, photo, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                            // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
-                            let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
-                            if(status) {
-                                await UtilCloudinary.destroy(`booking/${imageName}`);
-                                break;
-                            }
-                        }
+                    } else {
+                        res.status(406).json({status: false, message, error});
                     }
-                }
-    
-                // THỰC HIỆN XOÁ ẢNH TRONG MODEL
-                locationInfor.images = locationInfor.images.filter((image) => image !== photo);
-                await locationInfor.save();
-                res.status(200).json({status: true, messgae: 'Delete photo location successfully'});
-    
+                })
+
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
                 res.status(500).json({status: false, message: 'Internal server failed'});
