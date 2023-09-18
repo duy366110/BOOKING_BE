@@ -4,16 +4,16 @@ const ControllerLocation = require("../../controller/admin/controller-location")
 const ModelLocation = require("../../model/model-location");
 
 // ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH LOCATION
-router.get("/:limit/:start", ControllerLocation.getLocation);
+router.get("/:limit/:start", ControllerLocation.getLocations);
 
 // ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
-router.get("/amount", ControllerLocation.getLocationAmount);
+router.get("/amount", ControllerLocation.getAmount);
 
 //ROUTER TÌN LOCATION THEO ID
-router.get("/:location", ControllerLocation.findLocationById);
+router.get("/:location", ControllerLocation.getLocationById);
 
 // ROUTER ADMIN LẤY DANH SÁCH LOCATION
-router.get("/", ControllerLocation.findLocation);
+router.get("/", ControllerLocation.getLocationAll);
 
 // ROUTER TẠO MỚI LOCATION
 router.post("/",[
