@@ -1,6 +1,7 @@
 "use strict"
 const ModelLocation = require("../model/model-location");
 const UtilCloudinary = require("../util/util.cloudinary");
+const ConfigEnv = require("../configs/config.env");
 
 class ServiceLocation {
 
@@ -97,9 +98,9 @@ class ServiceLocation {
                     let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                     // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
-                    let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                    let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                     if(status) {
-                        images.push(`booking/${imageName}`);
+                        images.push(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                     }
                 }
                 
@@ -130,9 +131,9 @@ class ServiceLocation {
                         let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                         // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
-                        let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                        let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                         if(status) {
-                            await UtilCloudinary.destroy(`booking/${imageName}`);
+                            await UtilCloudinary.destroy(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                             break;
                         }
                     }

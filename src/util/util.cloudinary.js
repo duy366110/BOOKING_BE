@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
-// const CONFIG_CLOUDINARY = require("../configs/config.cloudinary");
 const ConfigEnv = require("../configs/config.env");
 
 
@@ -23,7 +22,7 @@ class CLOUDINARY {
             cb(null, file.originalname); 
         },
         params: {
-            folder: 'booking',
+            folder: ConfigEnv.CLOUDINARY_DIRECTORY,
         }
     })
 
