@@ -40,9 +40,13 @@ const ModelHotel = new Schema({
         type: Boolean,
         default: false
     },
-    price: {
-        type: mongoose.Schema.Types.Decimal128,
-        default: 0
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
     },
     rooms: [
         {

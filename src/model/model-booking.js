@@ -46,6 +46,14 @@ const ModelTransaction = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'rooms'
     },
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
+    },
     roomNumbers: [
         {
             type:String,
