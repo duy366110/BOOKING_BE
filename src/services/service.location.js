@@ -76,7 +76,7 @@ class ServiceLocation {
             }
 
             location.model.title = location.title;
-            location.model.updateDate = Date.now;
+            location.model.updateDate = new Date();
             await location.model.save();
 
             cb({status: true, message: 'Update location successfully'});

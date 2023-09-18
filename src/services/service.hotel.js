@@ -1,5 +1,7 @@
 "use strict"
 const ModelHotel = require("../model/model-hotel");
+const ModelLocation = require("../model/model-location");
+const ModelCategory = require("../model/model-category");
 const UtilCloudinary = require("../util/util.cloudinary");
 
 class ServiceCategory {
@@ -80,20 +82,55 @@ class ServiceCategory {
         }
     }
 
-    // CẬP NHẬT CATEGORY
-    async update(category = {}, images = [], cb) {
+    // CẬP NHẬT HOTEL
+    async update(hotel = {}, images = [], location, category, cb) {
         try {
+
+            // THỰC HIỆN TÌM KIẾM VÀ CẬP NHẬT
+            // 1) CẬP NHẬT CITY
+            if(hotel.model.city._id.toString() !== location._id.toString()) {
+                hotel.model.city.collections = hotel.model.city.collections.filter((city) => city.toString() !== hotel.model._id.toString());
+                hotel.model.city.save();
+
+                // CẬP NHẬT LIÊN KẾT MỚI
+                location.collections.push(hotel.model);
+                await location.save();
+
+                // CẬP NHẬT LOCATION MỚI CHO HOTEL
+                hotel.model.city = location;
+            }
+
+            // 2) CẬP NHẬT TYPE
+            if(hotel.model.type._id.toString() !== category._id.toString()) {
+                hotel.model.type.collections = hotel.model.type.collections.filter((type) => type.toString() !== hotel.model._id.toString());
+                await hotel.model.type.save();
+
+                // CẬP NHẬT LIÊN KẾT MỚI
+                category.collections.push(hotel.model);
+                await category.save();
+
+                // CẬP NHẬT CATEGORY MỚI CHO HOTEL
+                hotel.model.type = category;
+            }
+
+            // CẬP NHẬT HÌNH ẢNH
             if(images.length) {
                 for(let image of images) {
-                    category.model.images.push(image);
+                    hotel.model.images.push(image);
                 }
             }
 
-            category.model.title = category.title;
-            category.model.updateDate = Date.now;
-            await category.model.save();
+            // 3) CẬP NHẬT INFOR HOTEL
+            hotel.model.name = hotel.name;
+            hotel.model.address = hotel.address;
+            hotel.model.distance = hotel.distance;
+            hotel.model.desc = hotel.desc;
+            hotel.model.feature = hotel.feature
+            hotel.model.updateDate = new Date();
 
-            cb({status: true, message: 'Update category successfully'});
+            await hotel.model.save();
+
+            cb({status: true, message: 'Update hotel successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -101,13 +138,13 @@ class ServiceCategory {
         }
     }
 
-    // XOÁ CATEGORY
-    async delete(category = {}, cb) {
+    // XOÁ HOTEL
+    async delete(hotel = {}, cb) {
         try {
 
-            if(category.model.images.length) {
+            if(hotel.model.images.length) {
                 let images = [];
-                for(let image of category.model.images) {
+                for(let image of hotel.model.images) {
                     let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                     // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
@@ -122,7 +159,16 @@ class ServiceCategory {
                 }
             }
 
-            await category.model.deleteOne();
+            // XOÁ LIÊN KẾT GIỮA HOTEL VÀ LOCATION
+            hotel.model.city.collections = hotel.model.city.collections.filter((city) => city.toString() !== hotel.model._id.toString());
+            await hotel.model.city.save();
+
+            // XOÁ LIÊN KẾT GIỮA HOTEL VÀ CATEGORY
+            hotel.model.type.collections = hotel.model.type.collections.filter((type) => type.toString() !== hotel.model._id.toString());
+            await hotel.model.type.save();
+
+            // XOÁ HOTEL
+            await hotel.model.deleteOne();
             cb({status: true, message: 'Update category successfully'});
 
         } catch (error) {

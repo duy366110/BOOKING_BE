@@ -121,54 +121,25 @@ class ControllerHotel {
                 let { files } = req;
 
                 if(hotel) {
-                    // // THỰC HIỆN TÌM KIẾM VÀ CẬP NHẬT
-                    // // 1) CẬP NHẬT CITY
-                    // if(hotel.city._id.toString() !== location._id.toString()) {
-                    //     // THỰC HIỆN XOÁ LIÊN KẾT CŨ
-                    //     let oldLocation = hotel.city;
-                    //     oldLocation.collections = oldLocation.collections.filter((city) => city._id.toString() !== hotel._id.toString());
-                    //     await oldLocation.save();
+                    // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL
+                    let images = [];
+                    if(files.length) {
+                        images = files.map((image) => {
+                            return image.path? image.path : '';
+                        })
+                    }
 
-                    //     // CẬP NHẬT LIÊN KẾT MỚI
-                    //     location.collections.push(hotel);
-                    //     await location.save();
-
-                    //     // CẬP NHẬT LOCATION MỚI CHO HOTEL
-                    //     hotel.city = location;
-                    // }
-
-                    // // 2) CẬP NHẬT TYPE
-                    // if(hotel.type._id.toString() !== category._id.toString()) {
-                    //     // THỰC HIỆN XOÁ LIÊN KẾT CŨ
-                    //     let oldType = hotel.type;
-                    //     oldType.collections = oldType.collections.filter((type) => type.toString() !== hotel._id.toString());
-                    //     await oldType.save();
-
-                    //     // CẬP NHẬT LIÊN KẾT MỚI
-                    //     category.collections.push(hotel);
-                    //     await category.save();
-
-                    //     // CẬP NHẬT CATEGORY MỚI CHO HOTEL
-                    //     hotel.type = category;
-                    // }
-
-                    // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH HOTEL.
-                    // if(files.length) {
-                    //     files.map((image) => {
-                    //         hotel.images.push(`images/${image.filename}`);
-                    //     })
-                    // }
-
-                    // 3) CẬP NHẬT INFOR HOTEL
-                    // hotel.name = name;
-                    // hotel.address = address;
-                    // hotel.distance = distance;
-                    // hotel.desc = desc;
-                    // hotel.feature = feature;
-                    // hotel.price = price;
-
-                    // await hotel.save();
-                    // res.status(200).json({status: true, message: 'Update hotel information successfully'});
+                    await ServiceHotel.update({
+                        model: hotel, name, address, distance, desc, feature
+                    }, images, location, category, (information) => {
+                        let { status, message, error } = information;
+                        if(status) {
+                            res.status(200).json({status: true, message});
+    
+                        } else {
+                            res.status(406).json({status: false, message, error});
+                        }
+                    })
 
                 } else {
                     res.status(404).json({status: false, message: 'Not found hotel'});
@@ -192,28 +163,15 @@ class ControllerHotel {
             try {
                 let { hotel } = req;
                 if(hotel) {
-                    let {city, type} = hotel;
-
-                    // THỰC HIỆN XOÁ LIÊN KẾT HOTEL VỚI CITY - LOCATION
-                    city.collections = city.collections.filter((elm) => elm.toString() !== hotel._id.toString());
-                    await city.save();
-
-                    // THỰC HIỆN XOÁ LIÊN KẾT HOTEL VỚI TYPE = CATEGORY
-                    type.collections = type.collections.filter((elm) => elm.toString() !== hotel._id.toString());
-                    await type.save();
-
-                    // THỰC HIỆN XOÁ HÌNH ẢNH
-                    if(hotel.images.length) {
-                        hotel.images.forEach((photo) => {
-                            if(fs.existsSync(path.join(__dirname, "../../", 'public', photo))) {
-                                fs.unlinkSync(path.join(__dirname, "../../", 'public', photo));
-                            }
-                        })
-                    }
-
-                    // THỰC HIẸN XOÁ HOTEL
-                    await hotel.deleteOne();
-                    res.status(200).json({status: true, message: "Delete hotel successfully"});
+                    await ServiceHotel.delete({model: hotel}, (information) => {
+                        let { status, message, error } = information;
+                        if(status) {
+                            res.status(200).json({status: true, message});
+    
+                        } else {
+                            res.status(406).json({status: false, message, error});
+                        }
+                    })
 
                 } else {
                     res.status(404).json({status: false, message: 'Not found hotel'});
