@@ -54,9 +54,6 @@ router.delete('/',[
 MiddlewareHotel.hotelFindById,
 ControllerHotel.deleteHotel);
 
-// ROUTER ADMIN XOÁ THÔNG TIN LIÊN KẾT GIỮA HOTEL VÀ ROOM
-router.delete("/hotel-link-room", ControllerHotel.deleteRoomOfHotel);
-
 // ROUTER ADMIN XOÁ ẢNH MÔ TẢ HOTEL
 router.delete("/photo", ControllerHotel.deletePhoto);
 

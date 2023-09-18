@@ -184,49 +184,23 @@ class ControllerHotel {
         }
     }
 
-    // ADMIN XOÁ ROOM LIÊN KẾT VỚI HOTEL - chua cap nhat
-    deleteRoomOfHotel = async (req, res, next) => {
-        try {
-            let { hotel, room } = req.body;
-
-            let hotelInfor = await ModelHotel.findById(hotel).populate("rooms").exec();
-            let roomInfor = hotelInfor.rooms.find((elm) => elm._id.toString() === room);
-
-            // THỰC HIỆN XOÁ LIÊN GIỮA ROOM VÀ HOTEL
-            roomInfor.hotels = roomInfor.hotels.filter((elm) => elm.toString() !== hotel);
-            hotelInfor.rooms = hotelInfor.rooms.filter((elm) => elm._id.toString() !== room);
-
-            await roomInfor.save();
-            await hotelInfor.save();
-
-
-            res.status(200).json({status: true, message: 'Delete room of hotel successfully'});
-
-        } catch (error) {
-            res.status(500).json({status: false, message: 'Internal server failed'});
-
-        }
-    }
-
     // ADMIN XOÁ PHÔT CỦA HOTEL
     deletePhoto = async (req, res, next) => {
         try {
 
             let { id, photo } = req.body;
             // TÌM KIẾM THÔNG TIN HOTEL CẦN XOÁ
-            let hotelInfor = await ModelHotel.findById(id).select('images');
+            let hotelInfor = await ModelHotel.findById(id).exec();
 
-            if(photo) {
-                // KIỂM TRA VÀ XOÁ ẢNH
-                let status = fs.existsSync(path.join(__dirname, "../../", "public", photo));
+            await ServiceHotel.deleteImage({model: hotelInfor}, photo, (information) => {
+                let { status, message, error } = information;
                 if(status) {
-                    fs.unlinkSync(path.join(__dirname, "../../", "public", photo));
-                    hotelInfor.images = hotelInfor.images.filter((elm) => elm !== photo);
-                }
-                await hotelInfor.save();
-            }
+                    res.status(200).json({status: true, message});
 
-            res.status(200).json({status: true, message: 'Delete photo done'});
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});

@@ -3,6 +3,7 @@ const ModelHotel = require("../model/model-hotel");
 const ModelLocation = require("../model/model-location");
 const ModelCategory = require("../model/model-category");
 const UtilCloudinary = require("../util/util.cloudinary");
+const ConfigEnv = require("../configs/config.env");
 
 class ServiceCategory {
 
@@ -21,16 +22,16 @@ class ServiceCategory {
     }
 
     // LẤY DANH SÁCH LOCATION
-    async getAll(cb) {
-        try {
-            let categories = await ModelCategory.find({}).lean();
-            cb({status: true, message: 'Get categories successfully', categories});
+    // async getAll(cb) {
+    //     try {
+    //         let categories = await ModelCategory.find({}).lean();
+    //         cb({status: true, message: 'Get categories successfully', categories});
 
-        } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
-            cb({status: false, message: 'Method failed', error});
-        }
-    }
+    //     } catch (error) {
+    //         // THỰC HIỆN PHƯƠNG THỨC LỖI
+    //         cb({status: false, message: 'Method failed', error});
+    //     }
+    // }
 
     // LẤY DANH PHẦN TỬ THEO ID
     async getById(id, cb) {
@@ -148,9 +149,9 @@ class ServiceCategory {
                     let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                     // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
-                    let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                    let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                     if(status) {
-                        images.push(`booking/${imageName}`);
+                        images.push(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                     }
                 }
                 
@@ -179,20 +180,20 @@ class ServiceCategory {
 
 
     // XOÁ ẢNH CATEGORY
-    async deleteImage(category = {}, photo = '', cb) {
+    async deleteImage(hotel = {}, photo = '', cb) {
         try {
 
             // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-            if(category.model.images.length) {
+            if(hotel.model.images.length) {
 
-                for(let image of category.model.images) {
+                for(let image of hotel.model.images) {
                     if(image === photo) {
                         let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                         // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
-                        let {status, result } = await UtilCloudinary.exists(`booking/${imageName}`);
+                        let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                         if(status) {
-                            await UtilCloudinary.destroy(`booking/${imageName}`);
+                            await UtilCloudinary.destroy(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                             break;
                         }
                     }
@@ -200,8 +201,8 @@ class ServiceCategory {
             }
 
             // THỰC HIỆN XOÁ FILE TRONG DB
-             category.model.images =  category.model.images.filter((image) => image !== photo);
-            await  category.model.save();
+             hotel.model.images =  hotel.model.images.filter((image) => image !== photo);
+            await  hotel.model.save();
 
             cb({status: true, message: 'Delete photo image successfully'});
 
