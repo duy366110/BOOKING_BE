@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const path = require('path');
 const fs = require('fs');
 const UtilCloudinary = require("../../util/util.cloudinary");
+const ServiceLocation = require("../../services/service.location");
 
 class ControllerLocation {
     constructor() { }
@@ -73,23 +74,23 @@ class ControllerLocation {
             try {
 
                 // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH LOCATION.
-                let paths = [];
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
+                    images = files.map((image) => {
                         return image.path? image.path : '';
                     })
                 }
 
                 // TẠO MỚI THÔNG TIN LOCATION
-                let status = await ModelLocation.create({title, images: paths});
+                await ServiceLocation.create({title}, images, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // GỬI STATUS VỀ ADMIN
-                if(status) {
-                    res.status(200).json({status: true, message: 'Create location successfully'});
-
-                } else {
-                    res.status(406).json({status: false, message: 'Create location failed'});
-                }
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (err) {
                 // PHƯƠNG THỨC LỖI
@@ -109,26 +110,26 @@ class ControllerLocation {
             try {
                 let { location, title } = req.body;
                 let { files } =  req;
-
                 let locationInfor = await ModelLocation.findById(location);
 
                 // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH LOCATION.
-                let paths = [];
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
                     })
-
-                    // THỰC HIỆN THÊM PHOTO VÀO LOCATION
-                    for(let path of paths) {
-                        locationInfor.images.push(path);
-                    }
                 }
 
-                // THỰC HIỆN CẬP NHẬT THÔNG TIN VÀ GỬI TRẠNG THÁI VỀ ADMIN
-                locationInfor.title = title;
-                await locationInfor.save();
-                res.status(200).json({status: true, message: "Update information location successfully"});
+                await ServiceLocation.update({model: locationInfor, title}, images, (information) => {
+                    let { status, message, error } = information;
+
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
 
             } catch (error) {
