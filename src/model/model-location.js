@@ -16,6 +16,14 @@ const ModelLocation = new Schema({
             default: ''
         }
     ],
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
+    },
     collections: [
         {
             type: Schema.Types.ObjectId,
