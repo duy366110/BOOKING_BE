@@ -12,7 +12,7 @@ class ServiceCategory {
     // LẤY DANH SÁCH HOTEL
     async getLimit(limit, start, cb) {
         try {
-            let hotels = await ModelHotel.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).select(['name', 'city', 'type', 'rooms']).populate(['city', 'type']).lean();
+            let hotels = await ModelHotel.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).select(['name', 'images', 'city', 'type', 'rooms']).populate(['city', 'type']).lean();
             cb({status: true, message: 'Get hotels successfully', hotels});
 
         } catch (error) {

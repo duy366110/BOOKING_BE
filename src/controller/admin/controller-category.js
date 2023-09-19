@@ -27,7 +27,7 @@ class ControllerCategory {
         }
     }
 
-    // PHƯƠNG THỨC LẤY DANH SÁCH LOCATION
+    // PHƯƠNG THỨC LẤY DANH SÁCH CATEGORY
     getCategoryAll = async (req, res, next) => {
         try {
             await ServiceCategory.getAll((information) => {
@@ -46,7 +46,7 @@ class ControllerCategory {
         }
     }
 
-    // PHƯƠNG THỨC TÌM LOCATION THÔNG QUA ID
+    // PHƯƠNG THỨC TÌM CATEGORY THÔNG QUA ID
     getCategoryById = async(req, res, next) => {
         try {
             let { category } = req.params;
@@ -66,7 +66,7 @@ class ControllerCategory {
         }
     }
 
-    // LÂY SỐ LƯỢNG CATERY HIỆN CÓ
+    // LÂY SỐ LƯỢNG CATEGORY HIỆN CÓ
     getAmount = async (req, res, next) => {
         try {
             await ServiceCategory.getAmount((information) => {
@@ -122,7 +122,7 @@ class ControllerCategory {
         }
     }
 
-    // ADMIN TIẾN HÀNH CẬP NHẬT
+    // ADMIN TIẾN HÀNH CẬP NHẬT CATEGORY
     modifiCategory = async(req, res, next) => {
         let { errors } = validationResult(req);
 
@@ -136,7 +136,7 @@ class ControllerCategory {
 
                 let categoryInfor = await ModelCategory.findById(category);
 
-                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH LOCATION.
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY.
                 let images = [];
                 if(files.length) {
                     images = files.map((image) => {

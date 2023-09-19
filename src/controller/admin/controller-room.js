@@ -28,6 +28,25 @@ class ControllerRoom {
         }
     }
 
+    // TRUY XUẤT DANH SÁCH ROOM
+    getRoomAll = async (req, res, next) => {
+        try {
+            await ServiceRoom.getAll((information) => {
+                let { status, message, rooms, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, rooms});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
+        }
+    }
+
     // ADMIN TRUY XUẤT ROOM THEO ID
     getRoombyId = async (req, res, next) => {
         try {
