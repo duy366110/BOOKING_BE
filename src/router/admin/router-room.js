@@ -33,13 +33,19 @@ router.patch("/",[
     body("roomNumber").notEmpty().withMessage("Room number not empty"),
 ], MiddlewareRoom.roomFindByIdClearRoomNumber, ControllerRoom.modifiRoom);
 
+// ROUTER JOIN ROOM TO HOTEL
+router.patch("/join", ControllerRoom.joinRoomToHotel);
+
+// ROUTER DESTROY ROOM TO HOTEL
+router.patch("/destroy", ControllerRoom.destroyRoomToHotel);
+
 // ROUTER ADMIN XOA ROOM
 router.delete("/",[
     body('room').custom( async(val, {req}) => {
         if(!val.trim()) throw Error("Room ID not empty");
 
         let roomInfor = await ModelRoom.findById(val);
-        if(roomInfor && roomInfor.hotels.length) {
+        if(roomInfor && roomInfor.hotel) {
             throw Error('Room reference hotel not executed method');
         }
 

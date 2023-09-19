@@ -38,12 +38,10 @@ const ModelRoom = new Schema({
         type: Date,
         default: Date.now
     },
-    hotels: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'hotels'
-        }
-    ]
+    hotel: {
+        type: Schema.Types.ObjectId,
+        ref: 'hotels'
+    }
 }, {
     collection: 'rooms'
 })

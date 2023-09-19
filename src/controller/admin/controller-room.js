@@ -2,6 +2,7 @@
 const { validationResult } = require("express-validator");
 const ModelRoom = require("../../model/model-room");
 const ServiceRoom = require("../../services/service.room");
+const ServiceMapRoomHotel = require("../../services/service.map_room_hotel");
 
 class ControllerRoom {
 
@@ -175,6 +176,46 @@ class ControllerRoom {
         }
     }
 
+    // LIÊN KẾT ROOM VÀ HOTEL
+    async joinRoomToHotel(req, res, next) {
+        try {
+            let { room, hotel } = req.body;
+            await ServiceMapRoomHotel.joinRoomToHotel(room, hotel, (information) => {
+                let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+            })
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: "Inetrnal server failed"});
+        }
+    }
+
+    // HUỶ LIÊN KẾT ROOM VÀ HOTEL
+    async destroyRoomToHotel(req, res, next) {
+        try {
+            let { room, hotel } = req.body;
+            await ServiceMapRoomHotel.destroyRoomToHotel(room, hotel, (information) => {
+                let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+            })
+            
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: "Inetrnal server failed"});
+        }
+    }
+
     // ADMIN XOÁ ROOM
     deleteRoom = async (req, res, next) => {
         let { errors } = validationResult(req);
@@ -187,7 +228,7 @@ class ControllerRoom {
                 let { room } = req.body;
                 
                  // THỰC HIỆN XOÁ ROOM THÔNG QUA ID
-                 let roomInfor = await ModelRoom.findById(room);
+                 let roomInfor = await ModelRoom.findById(room).populate(['hotel']).exec();
 
                 await ServiceRoom.delete({model: roomInfor}, (information) => {
                     let { status, message, error } = information;

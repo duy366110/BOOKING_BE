@@ -27,6 +27,25 @@ class ControllerHotel {
         }
     }
 
+    // TRUY XUẤT DANH SÁCH HOTEL
+    getHotelAll = async (req, res, next) => {
+        try {
+            await ServiceHotel.getAll((information) => {
+                let { status, message, hotels, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotels});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
+        }
+    }
+
     // PHƯƠNG THỨC TÌM HOTEL THÔNG QUA ID
     getHotelById = async(req, res, next) => {
         try {
