@@ -10,7 +10,7 @@ class ServiceRoom {
     // LẤY DANH SÁCH ROOM
     async getLimit(limit, start, cb) {
         try {
-            let rooms = await ModelRoom.sort({createDate: 'desc'}).find({}).limit(limit).skip(start).lean();
+            let rooms = await ModelRoom.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
             cb({status: true, message: 'Get rooms successfully', rooms});
 
         } catch (error) {
