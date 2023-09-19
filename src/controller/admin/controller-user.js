@@ -24,7 +24,7 @@ class ControllerUser {
     getLimitUser = async(req, res, next) => {
         try {
             let { limit, start } = req.params;
-            let usersInfor = await ModelUser.find({}).limit(limit).skip(start).exec();
+            let usersInfor = await ModelUser.find({}).limit(limit).skip(start).populate(['role']).lean();
             res.status(200).json({status: true, message: 'Find user successfully', users: usersInfor});
 
         } catch (error) {
