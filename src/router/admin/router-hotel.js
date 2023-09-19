@@ -4,6 +4,9 @@ const ModelHotel = require("../../model/model-hotel");
 const MiddlewareHotel = require("../../middleware/middleware-hotel");
 const ControllerHotel = require("../../controller/admin/controller-hotel");
 
+// ROUTER TRUY XUẤT THÔNG TIN TOÀN BỘ HOTEL
+router.get("/all", ControllerHotel.getHotelAll);
+
 // ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH CATEGORY
 router.get("/:limit/:start", ControllerHotel.getHotel);
 

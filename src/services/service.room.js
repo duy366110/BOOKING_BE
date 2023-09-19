@@ -10,7 +10,7 @@ class ServiceRoom {
     // LẤY DANH SÁCH ROOM
     async getLimit(limit, start, cb) {
         try {
-            let rooms = await ModelRoom.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
+            let rooms = await ModelRoom.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).populate(['hotel']).lean();
             cb({status: true, message: 'Get rooms successfully', rooms});
 
         } catch (error) {
@@ -34,7 +34,7 @@ class ServiceRoom {
     // TRUY XUẤT ROOM TỬ THEO ID
     async getById(id, cb) {
         try {
-            let room = await ModelRoom.findById(id).lean();
+            let room = await ModelRoom.findById(id).populate(['hotel']).lean();
             cb({status: true, message: 'Get room successfully', room});
 
         } catch (error) {
@@ -110,7 +110,7 @@ class ServiceRoom {
     // XOÁ CATEGORY
     async delete(room = {}, cb) {
         try {
-
+            
             if(room.model.images.length) {
                 let images = [];
                 for(let image of room.model.images) {

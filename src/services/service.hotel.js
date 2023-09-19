@@ -21,6 +21,18 @@ class ServiceCategory {
         }
     }
 
+    // LẤY DANH SÁCH HOTEL
+    async getAll(cb) {
+        try {
+            let hotels = await ModelHotel.find({}).lean();
+            cb({status: true, message: 'Get hotels successfully', hotels});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // LẤY DANH PHẦN TỬ THEO ID
     async getById(id, cb) {
         try {
