@@ -12,7 +12,7 @@ class ServiceCategory {
     // LẤY DANH SÁCH HOTEL
     async getLimit(limit, start, cb) {
         try {
-            let hotels = await ModelHotel.find({}).limit(limit).skip(start).select(['name', 'city', 'type', 'rooms']).populate(['city', 'type']).lean();
+            let hotels = await ModelHotel.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).select(['name', 'city', 'type', 'rooms']).populate(['city', 'type']).lean();
             cb({status: true, message: 'Get hotels successfully', hotels});
 
         } catch (error) {
@@ -20,18 +20,6 @@ class ServiceCategory {
             cb({status: false, message: 'Method failed', error});
         }
     }
-
-    // LẤY DANH SÁCH LOCATION
-    // async getAll(cb) {
-    //     try {
-    //         let categories = await ModelCategory.find({}).lean();
-    //         cb({status: true, message: 'Get categories successfully', categories});
-
-    //     } catch (error) {
-    //         // THỰC HIỆN PHƯƠNG THỨC LỖI
-    //         cb({status: false, message: 'Method failed', error});
-    //     }
-    // }
 
     // LẤY DANH PHẦN TỬ THEO ID
     async getById(id, cb) {

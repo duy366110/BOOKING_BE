@@ -4,21 +4,14 @@ const ModelRoom = require("../../model/model-room");
 const MiddlewareRoom = require("../../middleware/middleware-room");
 const ControllerRoom = require("../../controller/admin/controller-room");
 
-// ROUTER TÌM THÔNG TIN THỰC HIỆN LIÊN KẾT GIỮA ROOM VÀ HOTEL
-router.get("/link/:room", MiddlewareRoom.roomLinkFindById, MiddlewareRoom.hotelFindNotLinkRoom, ControllerRoom.findRoomInforLink);
-
-// ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH LOCATION
+// ROUTER TRUY XUẤT THÔNG TIN DANH SÁCH ROOM
 router.get("/:limit/:start", ControllerRoom.getRooms);
 
-// ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
-router.get("/amount", ControllerRoom.getRoomAmount);
-
-// ROUTER ADMIN LẤY THÔNG TIN TẤT CẢ CÁC ROOM
-router.get("/", ControllerRoom.findRooms);
-
+// ROUTER TRUY SỐ LƯỢNG ROOM HIỆN CÓ
+router.get("/amount", ControllerRoom.getAmount);
 
 // ROUTER ADMIN TÌM ROOM THEO ID
-router.get("/:room", ControllerRoom.findRoombyId);
+router.get("/:room", ControllerRoom.getRoombyId);
 
 // ADMIN TẠO MỚI ROOM CỦA HOTEL.
 router.post('/',[
@@ -27,9 +20,6 @@ router.post('/',[
     body("maxPeople").notEmpty().withMessage("Max people not empty"),
     body("roomNumber").notEmpty().withMessage("Room number not empty"),
 ], ControllerRoom.createRoom);
-
-// ROUTER CẬP NHẬT/ TẠO LIÊN KẾT GIỮA ROOM VÀ HOTEL
-router.patch("/link", MiddlewareRoom.roomFindById, MiddlewareRoom.hotelFindById, ControllerRoom.createLinkRoomToHotel);
 
 // ROUTER ADMIN CẬP NHẬT ROOM
 router.patch("/",[

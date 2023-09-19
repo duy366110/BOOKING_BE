@@ -10,7 +10,7 @@ class ServiceCategory {
     // LẤY DANH SÁCH LOCATION
     async getLimit(limit, start, cb) {
         try {
-            let categories = await ModelCategory.find({}).limit(limit).skip(start).lean();
+            let categories = await ModelCategory.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
             cb({status: true, message: 'Get categories successfully', categories});
 
         } catch (error) {

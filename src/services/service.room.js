@@ -1,17 +1,17 @@
 "use strict"
-const ModelLocation = require("../model/model-location");
+const ModelRoom = require("../model/model-room");
 const UtilCloudinary = require("../util/util.cloudinary");
 const ConfigEnv = require("../configs/config.env");
 
-class ServiceLocation {
+class ServiceRoom {
 
     constructor() { }
 
-    // LẤY DANH SÁCH LOCATION
+    // LẤY DANH SÁCH ROOM
     async getLimit(limit, start, cb) {
         try {
-            let locations = await ModelLocation.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
-            cb({status: true, message: 'Get locations successfully', locations});
+            let rooms = await ModelRoom.sort({createDate: 'desc'}).find({}).limit(limit).skip(start).lean();
+            cb({status: true, message: 'Get rooms successfully', rooms});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -19,23 +19,11 @@ class ServiceLocation {
         }
     }
 
-    // LẤY DANH SÁCH LOCATION
-    async getAll(cb) {
-        try {
-            let locations = await ModelLocation.find({}).lean();
-            cb({status: true, message: 'Get locations successfully', locations});
-
-        } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
-            cb({status: false, message: 'Method failed', error});
-        }
-    }
-
-    // LẤY DANH PHẦN TỬ THEO ID
+    // TRUY XUẤT ROOM TỬ THEO ID
     async getById(id, cb) {
         try {
-            let location = await ModelLocation.findById(id).lean();
-            cb({status: true, message: 'Get location location successfully', location});
+            let room = await ModelRoom.findById(id).lean();
+            cb({status: true, message: 'Get room successfully', room});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -43,11 +31,11 @@ class ServiceLocation {
         }
     }
 
-    // LẤY SỐ LƯỢNG LOCATION
+    // LẤY SỐ LƯỢNG ROOM
     async getAmount(cb) {
         try {
-            let amount = await ModelLocation.find({}).count().lean();
-            cb({status: true, message: 'Get amount location successfully', amount});
+            let amount = await ModelRoom.find({}).count().lean();
+            cb({status: true, message: 'Get amount room successfully', amount});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -55,11 +43,19 @@ class ServiceLocation {
         }
     }
 
-    // TẠO MỚI LOCATION
-    async create(location, images, cb) {
+    // TẠO MỚI ROOM
+    async create(room = {}, images, cb) {
         try {
-            await ModelLocation.create({title: location.title, images});
-            cb({status: true, message: 'Create location successfully'});
+            await ModelRoom.create({
+                title: room.title,
+                price: room.price,
+                maxPeople: room.maxPeople,
+                desc: room.desc,
+                roomNumbers: room.roomsNumber,
+                images
+            });
+
+            cb({status: true, message: 'Create room successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -67,20 +63,31 @@ class ServiceLocation {
         }
     }
 
-    // CẬP NHẬT LOCATION
-    async update(location = {}, images = [], cb) {
+    // CẬP NHẬT ROOM
+    async update(room = {}, images = [], cb) {
         try {
+
             if(images.length) {
                 for(let image of images) {
-                    location.model.images.push(image);
+                    room.model.images.push(image);
                 }
             }
 
-            location.model.title = location.title;
-            location.model.updateDate = new Date();
-            await location.model.save();
+            // ĐẶT LẠI SỐ PHÒNG CHO ROOM
+            if(room.roomsNumber.length) {
+                room.roomsNumber.forEach((numberRoom) => {
+                    room.model.roomNumbers.push(numberRoom);
+                })
+            }
 
-            cb({status: true, message: 'Update location successfully'});
+            room.model.title = room.title;
+            room.model.price = room.price;
+            room.model.desc = room.desc;
+            room.model.maxPeople = room.maxPeople;
+            room.model.updateDate = new Date();
+            await room.model.save();
+
+            cb({status: true, message: 'Update room successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -88,13 +95,13 @@ class ServiceLocation {
         }
     }
 
-    // XOÁ LOCATION
-    async delete(location = {}, cb) {
+    // XOÁ CATEGORY
+    async delete(room = {}, cb) {
         try {
 
-            if(location.model.images.length) {
+            if(room.model.images.length) {
                 let images = [];
-                for(let image of location.model.images) {
+                for(let image of room.model.images) {
                     let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
                     // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
@@ -109,8 +116,8 @@ class ServiceLocation {
                 }
             }
 
-            await location.model.deleteOne();
-            cb({status: true, message: 'Update location successfully'});
+            await room.model.deleteOne();
+            cb({status: true, message: 'Update room successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -119,14 +126,14 @@ class ServiceLocation {
     }
 
 
-    // XOÁ ẢNH LOCATION
-    async deleteImage(location = {}, photo = '', cb) {
+    // XOÁ ẢNH ROOM
+    async deleteImage(room = {}, photo = '', cb) {
         try {
 
             // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-            if(location.model.images.length) {
+            if(room.model.images.length) {
 
-                for(let image of location.model.images) {
+                for(let image of room.model.images) {
                     if(image === photo) {
                         let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
@@ -141,8 +148,8 @@ class ServiceLocation {
             }
 
             // THỰC HIỆN XOÁ FILE TRONG DB
-             location.model.images =  location.model.images.filter((image) => image !== photo);
-            await  location.model.save();
+             room.model.images =  room.model.images.filter((image) => image !== photo);
+            await  room.model.save();
 
             cb({status: true, message: 'Delete photo image successfully'});
 
@@ -153,7 +160,7 @@ class ServiceLocation {
     }
 }
 
-module.exports = new ServiceLocation();
+module.exports = new ServiceRoom();
 
 
   

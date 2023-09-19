@@ -1,8 +1,6 @@
+"use strict"
 const { validationResult } = require("express-validator");
-const path = require('path');
-const fs = require('fs');
 const ModelHotel = require("../../model/model-hotel");
-const ModelRoom = require("../../model/model-room");
 const ServiceHotel = require("../../services/service.hotel");
 
 class ControllerHotel {
