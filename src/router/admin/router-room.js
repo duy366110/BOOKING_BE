@@ -13,6 +13,9 @@ router.get("/amount", ControllerRoom.getAmount);
 // ROUTER ADMIN TÌM ROOM THEO ID
 router.get("/:room", ControllerRoom.getRoombyId);
 
+// ROUTER ADMIN LẤY DANH SÁCH ROOM
+router.get("/", ControllerRoom.getRoomAll);
+
 // ADMIN TẠO MỚI ROOM CỦA HOTEL.
 router.post('/',[
     body('title').notEmpty().withMessage("Title not empty"),

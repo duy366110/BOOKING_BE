@@ -19,6 +19,18 @@ class ServiceRoom {
         }
     }
 
+    // LẤY DANH SÁCH ROOM
+    async getAll(cb) {
+        try {
+            let rooms = await ModelRoom.find({}).lean();
+            cb({status: true, message: 'Get rooms successfully', rooms});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // TRUY XUẤT ROOM TỬ THEO ID
     async getById(id, cb) {
         try {
