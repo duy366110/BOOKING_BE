@@ -1,7 +1,6 @@
-const ModelCategory = require("../../model/model-category");
+"use strict"
 const { validationResult } = require("express-validator");
-const fs = require('fs');
-const path = require("path");
+const ModelCategory = require("../../model/model-category");
 const ServiceCategory = require("../../services/service.category");
 
 class ControllerCategory {
