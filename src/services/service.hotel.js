@@ -37,7 +37,6 @@ class ServiceCategory {
     async getById(id, cb) {
         try {
             let hotel = await ModelHotel.findById(id).populate(['rooms']).lean();
-            console.log(hotel);
             cb({status: true, message: 'Get hotel successfully', hotel});
 
         } catch (error) {
