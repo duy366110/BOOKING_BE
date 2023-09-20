@@ -1,18 +1,22 @@
-const ModelCategory = require("../../model/model-category");
+"use strict"
+const ServiceCategory = require("../../services/service.category");
 
 class ControllerCategory {
 
     constructor() { }
 
-    // LẤY DANH SÁCH TẤT CẢU LOCATION
-    getCategory = async( req, res, next) => {
+    // TRUY XUẤT DANH MỤC CATEGORY
+    async getCategoryAll( req, res, next) {
         try {
-            let categoryInfor = await ModelCategory.find({});
-            res.status(200).json({
-                status: true,
-                message: "Get location done",
-                categories: categoryInfor
-            })
+            await ServiceCategory.getAll((information) => {
+                let { status, message, categories, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, categories});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI

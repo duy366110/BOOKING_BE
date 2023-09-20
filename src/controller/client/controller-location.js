@@ -1,22 +1,25 @@
-const modelLocation = require("../../model/model-location");
-const ModelLocation = require("../../model/model-location");
+"use strict"
+const ServiceLocation = require("../../services/service.location");
 class ControllerLocation {
 
     constructor() { }
 
-    // LẤY DANH SÁCH TẤT CẢU LOCATION
-    getLocation = async( req, res, next) => {
+    // TRUY XUẤT DANH MỤC LOCATION
+    async getLocationAll( req, res, next) {
         try {
-            let locationInfor = await ModelLocation.find({});
-            res.status(200).json({
-                status: true,
-                message: "Get location done",
-                locations: locationInfor
-            })
+            await ServiceLocation.getAll((information) => {
+                let { status, message, locations, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, locations});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
-            res.status(500).json({status: false, message: 'Internal server failed', locations: locationInfor});
+            res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 }
