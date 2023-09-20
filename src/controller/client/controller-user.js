@@ -3,6 +3,7 @@ const ModelRole = require("../../model/model-role");
 const Bcrypt = require("../../util/util.bcrypt");
 const jwt = require("../../util/util.jwt");
 const { validationResult } = require("express-validator");
+const ServiceUser = require("../../services/service.user");
 
 class ControllerUser {
 
@@ -11,68 +12,43 @@ class ControllerUser {
     // CLIENT ĐĂNG KÝ TÀI KHOẢN
     registerAccount = async (req, res, next) => {
         try {
-
-            let { email, password } = req.body;
             let { errors } = validationResult(req);
 
             if(errors.length) {
                 res.status(406).json({status: false, message: errors[0].msg});
 
             } else {
-                // KIỂM TRA EMAIL ĐÃ ĐƯỢC ĐĂNG KÝ CHƯA
-                let userInfor = await ModelUser.findOne({email: {$eq: email}});
+                let { username, fullname, email, password, phone } = req.body;
+                let role = await ModelRole.findOne({name: {$eq: 'Client'}});
 
-                if(userInfor) {
-                    res.status(406).json({status: true, message: 'E-mail account exists already'});
+                await ServiceUser.register({username, fullname, email, password, phone}, role, (information) => {
+                    let { status, message, user } = information;
 
-                } else {
+                    jwt.sign({email: user.email}, (infor) => {
 
-                    // TÌM ROLE CLIENT CHO ACCOUNT ĐƯỢC TẠO TỪ CLIENT
-                    let roleInfor = await ModelRole.findOne({name: {$eq: 'Client'}});
-                    let passwordBcrypt = Bcrypt.has(password);
+                        if(infor.status) {
+                            res.status(200).json({
+                                status: true,
+                                message: 'Register account successfully',
+                                infor: {
+                                    token: infor.token,
+                                    username: user?.username? user?.username : '',
+                                    fullname: user?.fullname? user?.fullname : '',
+                                    email: user?.email,
+                                    phone: user?.phonenumber? user?.phonenumber : '',
+                                    role: user?.role.name
+                                }
+                            })
 
-                    // TẠO ACCOUNT CLIENT
-                    let userInfor = await ModelUser.create({
-                        email,
-                        password: passwordBcrypt,
-                        role: roleInfor
+                        } else {
+                            res.status(406).json({status: true, message: 'Accept toke failed'});
+                        }
                     })
-
-                    if(userInfor) {
-
-                        // LƯU LIÊN GIỮA ROLE VÀ ACCOUNT
-                        roleInfor.users.push(userInfor);
-                        await roleInfor.save();
-
-                        // TẠO TOKEN SAU KHI CLIENT TẠO ACCOUNT THÀNH CÔNG
-                        jwt.sign({email: userInfor.email}, (infor) => {
-                            if(infor.status) {
-                                res.status(200).json({
-                                    status: true,
-                                    message: 'Register account successfully',
-                                    infor: {
-                                        token: infor.token,
-                                        username: userInfor.username? userInfor.username : '',
-                                        fullname: userInfor.fullname? userInfor.fullname : '',
-                                        email: userInfor.email,
-                                        phone: userInfor.phonenumber? userInfor.phonenumber : '',
-                                        role: userInfor.role.name
-                                    }
-                                })
-
-                            } else {
-                                res.status(406).json({status: true, message: 'Accept toke failed'});
-                            }
-                        })
-
-                    } else {
-                        res.status(406).json({status: true, message: 'Register account failed'});
-                    }
-                }
+                })
             }
 
-
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
 
         }

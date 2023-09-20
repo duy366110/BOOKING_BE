@@ -81,6 +81,33 @@ class ServiceUser {
         }
     }
 
+    // KHÁCH HÀNG ĐĂNG KÝ TÀI KHOẢN
+    async register(user={}, role = {}, cb) {
+        try {
+            let userInfor = await ModelUser.create({
+                username: user.username,
+                fullname: user.fullname,
+                email: user.email,
+                password: UtilBcrypt.has(user.password),
+                phonenumber: user.phone,
+                role
+            });
+
+            if(userInfor) {
+                role.users.push(userInfor);
+                await role.save();
+                cb({status: true, message: 'Register user successfully', user: userInfor});
+
+            } else {
+                cb({status: false, message: 'Register user unsuccessfully', user: null, error: null});
+            }
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // CẬP NHẬT USER
     async update(user = {}, role = {}, cb) {
         try {

@@ -1,131 +1,35 @@
 [{
   "_id": {
-    "$oid": "64db42bc2e873c8fdcf5606f"
+    "$oid": "650aad298cf1ed3536ea8cf4"
   },
-  "name": "HANOI ROYAL PALACE HOTEL 2",
+  "name": "RIAD AZRUR",
   "city": {
-    "$oid": "64d8a4dd2669d51afaacefdc"
+    "$oid": "650aabc88cf1ed3536ea8c8e"
   },
   "type": {
-    "$oid": "64d9a2969400252223996c5f"
+    "$oid": "650aac278cf1ed3536ea8c98"
   },
-  "address": "Hang Da, 95 Hang Bong Street, Old Quarter, Hanoi, Vietnam",
+  "address": " 72 Derb El Hammam, Assouel,, Medina, 40000 Marrakesh, Morocco",
   "distance": "10 km",
   "images": [
-    "images/0.1540084878170411313125860.jpeg"
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695198504/test/qcm63tcjd0x2ovli9feo.jpg"
   ],
-  "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Old Quarter, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and fitness center on-site.",
-  "rating": 0,
-  "featured": true,
-  "price": {
-    "$numberDecimal": "150"
-  },
-  "rooms": [
-    {
-      "$oid": "64dc7748417b3d75444a0045"
-    },
-    {
-      "$oid": "64dc77e4417b3d75444a0055"
-    },
-    {
-      "$oid": "64dc788c417b3d75444a0066"
-    }
-  ],
-  "__v": 3
-},
-{
-  "_id": {
-    "$oid": "64db43262e873c8fdcf56083"
-  },
-  "name": "La Sinfonia del Rey Hotel and Spa",
-  "city": {
-    "$oid": "64d8a4e82669d51afaacefe1"
-  },
-  "type": {
-    "$oid": "64d9a2969400252223996c5f"
-  },
-  "address": "Hang Dau, Hoan Kiem District, Hanoi, Vietnam",
-  "distance": "200 m",
-  "images": [
-    "images/0.28966147832833887428762.jpeg"
-  ],
-  "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Hoan Kiem District, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and hot tub on-site.",
+  "desc": "At the accommodation guests are welcome to use spa facilities, wellness packages and beauty services.",
   "rating": 0,
   "featured": false,
-  "price": {
-    "$numberDecimal": "600"
-  },
   "rooms": [
     {
-      "$oid": "64dc776b417b3d75444a0049"
+      "$oid": "650aad768cf1ed3536ea8d07"
     },
     {
-      "$oid": "64dc780c417b3d75444a0059"
+      "$oid": "650ab199cebbc165ae47385b"
     }
   ],
-  "__v": 2
-},
-{
-  "_id": {
-    "$oid": "64db43772e873c8fdcf5608e"
+  "createDate": {
+    "$date": "2023-09-20T08:28:25.740Z"
   },
-  "name": "May De Ville Legend Hotel & Spa",
-  "city": {
-    "$oid": "64d8a4dd2669d51afaacefdc"
+  "updateDate": {
+    "$date": "2023-09-20T08:28:25.740Z"
   },
-  "type": {
-    "$oid": "64d9a2969400252223996c5f"
-  },
-  "address": "23-25 Nguyen Sieu, Hang Buom, Hoan Kiem, Old Quarter, Hanoi, Vietnam",
-  "distance": "445 m",
-  "images": [
-    "images/0.320505886933022495058973.jpeg"
-  ],
-  "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in Old Quarter, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous Old Quarter. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and fitness center on-site.",
-  "rating": 0,
-  "featured": true,
-  "price": {
-    "$numberDecimal": "325"
-  },
-  "rooms": [
-    {
-      "$oid": "64dc778d417b3d75444a004d"
-    },
-    {
-      "$oid": "64dc7838417b3d75444a005d"
-    }
-  ],
-  "__v": 3
-},
-{
-  "_id": {
-    "$oid": "64db43e72e873c8fdcf560ad"
-  },
-  "name": "Alagon Saigon Hotel & Spa",
-  "city": {
-    "$oid": "64d8a4cd2669d51afaacefd7"
-  },
-  "type": {
-    "$oid": "64d9a2969400252223996c5f"
-  },
-  "address": "289-291 Ly Tu Trong Street, Ben Thanh Ward, District 1, District 1, Ho Chi Minh City, Vietnam",
-  "distance": "640 m",
-  "images": [
-    "images/0.4267159053536149117127036.jpeg"
-  ],
-  "desc": "Get your trip off to a great start with a stay at this property, which offers free Wi-Fi in all rooms. Strategically situated in District 1, allowing you access and proximity to local attractions and sights. Don't leave before paying a visit to the famous War Remnants Museum. Rated with 4 stars, this high-quality property provides guests with access to massage, restaurant and fitness center on-site.",
-  "rating": 0,
-  "featured": true,
-  "price": {
-    "$numberDecimal": "350"
-  },
-  "rooms": [
-    {
-      "$oid": "64dc77b5417b3d75444a0051"
-    },
-    {
-      "$oid": "64dc785d417b3d75444a0062"
-    }
-  ],
   "__v": 2
 }]
