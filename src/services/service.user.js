@@ -1,7 +1,5 @@
 "use strict"
 const ModelUser = require("../model/model-user");
-const UtilCloudinary = require("../util/util.cloudinary");
-const ConfigEnv = require("../configs/config.env");
 const UtilBcrypt = require("../util/util.bcrypt");
 
 class ServiceUser {

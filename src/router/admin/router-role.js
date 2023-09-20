@@ -6,16 +6,16 @@ const ControllerRole = require("../../controller/admin/controller-role");
 const ObjectId = mongodb.ObjectId;
 
 // ROUTER ADMIN LẤY THÔNG TIN ROLE HIỆN CÓ
-router.get("/amount", ControllerRole.getRoleAmount);
+router.get("/amount", ControllerRole.getAmount);
 
 // ROUTER PAGINATION ADMIN LẤY THÔNG TIN TẤT CẢ CÁC ROLE
 router.get('/:limit/:start', ControllerRole.getRoles);
 
 // ROUTER ADMIN TÌM ROLE THEO ID
-router.get("/:role", ControllerRole.findRoleById);
+router.get("/:role", ControllerRole.getRoleById);
 
 // ROUTER ADMIN LẤY THÔNG TIN TẤT CẢ CÁC ROLE
-router.get('/', ControllerRole.findRoles);
+router.get('/', ControllerRole.getRoleAll);
 
 // ROUTER ADMIN TẠO ROLE
 router.post('/', [
