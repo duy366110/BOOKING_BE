@@ -32,7 +32,7 @@ class ServiceMapRoomHotel {
             let hotel = await ModelHotel.findById(hotelId).exec();
             let room = await ModelRoom.findById(roomId).exec();
 
-            hotel.rooms = hotel.rooms.filter((roomInfor) => roomInfor.toString() !== room);
+            hotel.rooms = hotel.rooms.filter((roomInfor) => roomInfor.toString() !== room.id.toString());
             room.hotel = null;
 
             await hotel.save();
