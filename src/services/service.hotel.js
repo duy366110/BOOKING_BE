@@ -1,9 +1,9 @@
 "use strict"
+const mongodb = require("mongodb");
 const ModelHotel = require("../model/model-hotel");
-const ModelLocation = require("../model/model-location");
-const ModelCategory = require("../model/model-category");
 const UtilCloudinary = require("../util/util.cloudinary");
 const ConfigEnv = require("../configs/config.env");
+const ObjectId = mongodb.ObjectId;
 
 class ServiceCategory {
 
@@ -36,8 +36,20 @@ class ServiceCategory {
     // LẤY DANH PHẦN TỬ THEO ID
     async getById(id, cb) {
         try {
-            let hotel = await ModelHotel.findById(id).lean();
+            let hotel = await ModelHotel.findById(id).populate(['rooms']).lean();
             cb({status: true, message: 'Get hotel successfully', hotel});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // TRUY XUẤT HOTEL THEO ID VÀ ROOM THEO ID
+    async getHotelWithRoomById(hotel='', room='', cb) {
+        try {
+            let hotelInfor = await ModelHotel.findById(hotel).populate([{path: 'rooms', match: {_id: new ObjectId(room)}}]).lean();
+            cb({status: true, message: 'Get hotel successfully', hotel: hotelInfor});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
