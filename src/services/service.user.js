@@ -54,6 +54,18 @@ class ServiceUser {
         }
     }
 
+    // TÌM USER ACCOUNT THEO ID
+    async findByEmail(email, cb) {
+        try {
+            let user = await ModelUser.findOne({email: {$eq: email}}).populate(['role']).exec();
+            cb({status: true, message: 'Find user successfully', user});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // TẠO MỚI USER
     async create(user = {}, role = {}, cb) {
         try {
