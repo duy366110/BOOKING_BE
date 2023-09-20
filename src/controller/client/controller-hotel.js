@@ -49,15 +49,24 @@ class ControllerHotel {
     getRoomHotelByID = async(req, res, next) => {
         try {
             let { hotel, room } = req.params;
-            let hotelInfor = await ModelHotel.findById(hotel).populate(['rooms']).exec();
-            let roomInfor = hotelInfor.rooms.find((elm) => elm._id.toString() === room);
+            await ServiceHotel.getHotelWithRoomById(hotel, room, (information) => {
+                let { status, message, hotel, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotel});
 
-            res.status(200).json({
-                status: true,
-                message: 'Find room in hotel successfully',
-                hotel: hotelInfor,
-                room: roomInfor
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
             })
+            // let hotelInfor = await ModelHotel.findById(hotel).populate(['rooms']).exec();
+            // let roomInfor = hotelInfor.rooms.find((elm) => elm._id.toString() === room);
+
+            // res.status(200).json({
+            //     status: true,
+            //     message: 'Find room in hotel successfully',
+            //     hotel: hotelInfor,
+            //     room: roomInfor
+            // })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
