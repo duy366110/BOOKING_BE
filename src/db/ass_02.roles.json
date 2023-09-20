@@ -6,47 +6,25 @@
   "users": [
     {
       "$oid": "64d5edaf51bf582d55c40d98"
-    },
-    {
-      "$oid": "64d6083ea4f46b48d0a4f092"
     }
   ],
   "__v": 2
 },
 {
   "_id": {
-    "$oid": "64d5ed5a51bf582d55c40d8b"
+    "$oid": "650ac5366ace988997b589f3"
   },
   "name": "Client",
   "users": [
     {
-      "$oid": "64d5ee6e51bf582d55c40db5"
-    },
-    {
-      "$oid": "64e3316d5956f60c6b457994"
-    },
-    {
-      "$oid": "64e4c411c6faf2e6a9313fa6"
-    },
-    {
-      "$oid": "64e4c410c6faf2e6a9313fa2"
+      "$oid": "650ac630df76bec6aded0fa5"
     }
   ],
-  "__v": 15
-},
-{
-  "_id": {
-    "$oid": "64d5ed7351bf582d55c40d8e"
+  "createDate": {
+    "$date": "2023-09-20T10:11:02.489Z"
   },
-  "name": "Editor",
-  "users": [],
+  "updateDate": {
+    "$date": "2023-09-20T10:11:02.489Z"
+  },
   "__v": 2
-},
-{
-  "_id": {
-    "$oid": "64e36f2e21e363de90fa03ef"
-  },
-  "name": "Owner",
-  "users": [],
-  "__v": 0
 }]

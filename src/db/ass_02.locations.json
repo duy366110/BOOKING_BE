@@ -1,51 +1,22 @@
 [{
   "_id": {
-    "$oid": "64d8a4cd2669d51afaacefd7"
+    "$oid": "650aabc88cf1ed3536ea8c8e"
   },
-  "title": "Ha noi",
+  "title": "Danang",
+  "desc": "",
   "images": [
-    "images/0.5737808446290702Ha Noi.jpg"
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695198151/test/bt6dgxulkymf3vegol4m.jpg"
   ],
   "collections": [
     {
-      "$oid": "64db43e72e873c8fdcf560ad"
+      "$oid": "650aad298cf1ed3536ea8cf4"
     }
   ],
-  "__v": 1,
-  "desc": ""
-},
-{
-  "_id": {
-    "$oid": "64d8a4dd2669d51afaacefdc"
+  "createDate": {
+    "$date": "2023-09-20T08:22:32.404Z"
   },
-  "title": "Ho Chi Minh",
-  "images": [
-    "images/0.7908655349054363HCM.jpg"
-  ],
-  "collections": [
-    {
-      "$oid": "64db42bc2e873c8fdcf5606f"
-    },
-    {
-      "$oid": "64db43772e873c8fdcf5608e"
-    }
-  ],
-  "__v": 2,
-  "desc": ""
-},
-{
-  "_id": {
-    "$oid": "64d8a4e82669d51afaacefe1"
+  "updateDate": {
+    "$date": "2023-09-20T08:22:32.404Z"
   },
-  "title": "Da Nang",
-  "images": [
-    "images/0.2181577008675959Da Nang.jpg"
-  ],
-  "collections": [
-    {
-      "$oid": "64db43262e873c8fdcf56083"
-    }
-  ],
-  "__v": 1,
-  "desc": ""
+  "__v": 3
 }]
