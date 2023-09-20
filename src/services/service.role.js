@@ -17,11 +17,11 @@ class ServiceRole {
         }
     }
 
-    // LẤY DANH SÁCH USER
+    // LẤY DANH SÁCH ROLE
     async getAll(cb) {
         try {
-            let users = await ModelRole.find({}).select(['username', 'fullname', 'email', 'phonenumber']).lean();
-            cb({status: true, message: 'Get roles successfully', users});
+            let roles = await ModelRole.find({}).lean();
+            cb({status: true, message: 'Get roles successfully', roles});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
