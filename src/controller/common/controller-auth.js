@@ -1,7 +1,7 @@
 const ModelUser = require("../../model/model-user");
 const { validationResult } = require('express-validator');
-const jwt = require("../../util/jwt");
-const bcrypt = require("../../util/bcrypt");
+const jwt = require("../../util/util.jwt");
+const bcrypt = require("../../util/util.bcrypt");
 
 class ControllerAuth {
 

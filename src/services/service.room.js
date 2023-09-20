@@ -129,7 +129,7 @@ class ServiceRoom {
             }
 
             await room.model.deleteOne();
-            cb({status: true, message: 'Update room successfully'});
+            cb({status: true, message: 'Delete category successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI

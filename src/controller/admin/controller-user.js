@@ -1,99 +1,116 @@
-const mongodb = require('mongodb');
+"use strict"
 const { validationResult } = require('express-validator');
 const ModelRole = require('../../model/model-role');
 const ModelUser = require("../../model/model-user");
-const Bcrypt = require("../../util/bcrypt");
-const ObjectId = mongodb.ObjectId;
+const ServiceUser = require("../../services/service.user");
 
 class ControllerUser {
 
     constructor() { }
 
-    // LẤY VỀ SỐ LƯỢNG USER HIỆN CÓ
-    getAmoutnUser = async(req, res, next) => {
+    // TRUY XUẤT THÔNG TIN USER VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
+    async getUsers(req, res, next) {
         try {
-            let amountUser = await ModelUser.find({}).count().exec();
-            res.status(200).json({status: true, message: 'Get user amout', amount: amountUser});
+            let { limit, start} = req.params;
+            await ServiceUser.getLimit(limit, start, (information) => {
+                let { status, message, users, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, users});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
-        }
-    }
 
-    // TRẢ VỀ THÔNG TIN USER VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-    getLimitUser = async(req, res, next) => {
-        try {
-            let { limit, start } = req.params;
-            let usersInfor = await ModelUser.find({}).limit(limit).skip(start).populate(['role']).lean();
-            res.status(200).json({status: true, message: 'Find user successfully', users: usersInfor});
-
-        } catch (error) {
-            res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
     // LẤY VỀ THÔNG TIN TÀI KHOẢN
-    findUsers = async (req, res, next) => {
+    getUserAll = async (req, res, next) => {
         try {
-            let usersInfor = await ModelUser.find({}).select(['username', 'fullname', 'email', 'phonenumber']);
-            res.status(200).json({status: true, users: usersInfor});
+            await ServiceUser.getAll((information) => {
+                let { status, message, users, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, users});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
-
         }
     }
 
-    // TIMG KIẾM USER THÔNG QUA ID
-    findUserById = async (req, res, next) => {
+    // TRUY XUẤT USER THÔNG QUA ID
+    getUserById = async (req, res, next) => {
         try {
             let { user } = req.params;
-            let userInfor = await ModelUser.findById(user)
-            .select(['username', 'fullname', 'email', 'phonenumber'])
-            .populate('role');
+            await ServiceUser.getById(user, (information) => {
+                let { status, message, user, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, user});
 
-            res.status(200).json({status: true, user: userInfor});;
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
+        }
+    }
 
+    //TRUY XUẤT SỐ LƯỢNG USER HIỆN CÓ
+    getAmount = async(req, res, next) => {
+        try {
+            await ServiceUser.getAmount((information) => {
+                let { status, message, amount, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, amount});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
     // ADMIN TẠO MỚI TÀI KHOẢN
     createUser = async (req, res, next) => {
         const { errors } = validationResult(req);
-        let {username, fullname, email, password, role, phonenumber} = req.body;
 
         try {
             if(errors.length) {
                 res.status(406).json({status: false, message: 'E-mail account exists already'});
                 
             } else {
+                let {username, fullname, email, password, role, phonenumber} = req.body;
+
                 // THỰC HIÊNK TÌM KIẾM ROLE CỦA USER
                 let roleInfor = await ModelRole.findById(role);
 
-                // MÃ HOÁ MẬT KHẨU VÀ TẠO MỚI USER.
-                let passwordBcrypt = Bcrypt.has(password);
-                let userInfor = await ModelUser.create({
-                    username,
-                    fullname,
-                    email,
-                    password: passwordBcrypt,
-                    phonenumber,
-                    role: roleInfor
+                // TẠO MỚI THÔNG TIN USER
+                await ServiceUser.create({username, fullname, email, password, phonenumber}, roleInfor, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
                 })
-
-                if(userInfor) {
-                    // THỰC HIỆN TẠO LIÊN KẾT GIỮA USER VÀ ROLE
-                    roleInfor.users.push(userInfor);
-                    await roleInfor.save();
-                    res.status(200).json({status: true, message: 'Create account successfully'});
-
-                } else {
-                    res.status(406).json({status: false, message: 'Create account failed'});
-
-                }
             }
 
         } catch (error) {
@@ -113,35 +130,18 @@ class ControllerUser {
         } else {
             try {
 
-                let userInfor = await ModelUser.findById(user).populate('role');
-                let oldRole = userInfor.role;
+                let userInfor = await ModelUser.findById(user).populate('role').exec();
+                let roleInfor = await ModelRole.findById(role);
 
-                // CẬP THÔNG TIN CƠ SỞ CỦA USER
-                userInfor.username = username;
-                userInfor.fullname = fullname;
-                userInfor.email = email;
-                userInfor.phonenumber = phonenumber;
+                await ServiceUser.update({model: userInfor, username, fullname, email, phonenumber}, roleInfor, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                // THỰC HIỆN CẬP NHẬT ROLE MỚI
-                if((oldRole._id.toString() !== role)) {
-                    let newRole = await ModelRole.findById(role);
-
-                    // XOÁ LIÊN KẾT TRONG GIỮA USER VÀ ROLE CŨ
-                    oldRole.users = oldRole.users.filter((elm) => elm._id.toString() !== userInfor._id.toString());
-
-                    // CẬP NHẬT ROLE MỚI CHO USER
-                    userInfor.role = newRole;
-                    newRole.users.push(userInfor);
-
-                    await oldRole.save();
-                    await newRole.save();
-                }
-
-                // TIẾN HÀNH CẬP NHẬT THÔNG TIN USER
-                await userInfor.save();
-
-                // GỬI TRẢ TRẠNG THÁI VỀ NGƯỜI DÙNG
-                res.status(200).json({status: true, message: 'Modifi user information'});
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (error) {
                 // PHUONG THỨC LỖI
@@ -162,18 +162,17 @@ class ControllerUser {
         } else {
             try {
 
-                let userInfor = await ModelUser.findById(user).populate('role').exec();                
-
-                // THỰC HIỆN XOÁ LIÊN KẾT GIỮA ROLE VÀ USER
-                userInfor.role.users = userInfor.role.users.filter((elm) => elm.toString() !== user);
-                await userInfor.role.save();
-
-
-                // TIẾN HÀNH XOÁ USER
-                await userInfor.deleteOne();
+                let userInfor = await ModelUser.findById(user).populate('role').exec(); 
                 
-                // XOÁ USER THÀNH CÔNG
-                res.status(200).json({status: true, message: 'Delete user successfully'});
+                await ServiceUser.delete({model: userInfor}, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
     
             } catch (error) {
                 // PHƯƠNG THỨC LỖI

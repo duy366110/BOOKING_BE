@@ -8,7 +8,7 @@ class ControllerRoom {
 
     constructor() { }
 
-    // TRUY XUẤT CẢ CÁC ROOM HIỆN CÓ - SỐ LƯỢNG CHỈ ĐỊNHs
+    // TRUY XUẤT CẢ CÁC ROOM HIỆN CÓ - SỐ LƯỢNG CHỈ ĐỊNH
     getRooms = async (req, res, next) => {
         try {
             let { limit, start} = req.params;
@@ -49,7 +49,7 @@ class ControllerRoom {
     }
 
     // ADMIN TRUY XUẤT ROOM THEO ID
-    getRoombyId = async (req, res, next) => {
+    getRoomById = async (req, res, next) => {
         try {
             let { room } = req.params;
             await ServiceRoom.getById(room, (information) => {

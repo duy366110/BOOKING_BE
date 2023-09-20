@@ -1,5 +1,5 @@
 const ModelUser = require('../../model/model-user');
-const JWT = require("../../util/jwt");
+const JWT = require("../../util/util.jwt");
 
 // ÁP DỤNG ROUTẺ TỪ CLIENT
 class MiddlewareUser {
