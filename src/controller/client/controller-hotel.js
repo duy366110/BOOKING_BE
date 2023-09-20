@@ -1,18 +1,23 @@
+"use strict"
 const ModelHotel = require("../../model/model-hotel");
+const ServiceHotel = require("../../services/service.hotel");
 
 class ControllerHotel {
 
     constructor() { }
 
-    // TÌM DANH SÁCH TẤT CẢ CÁC HOTEL
+    // TRUY XUẤT DANH MỤC
     getHotel = async (req, res, next) => {
         try {
-            let hotelsInfor = await ModelHotel.find({}).populate(["name", "city", "images", "price"]);
-            res.status(200).json({
-                status: true,
-                message: "Get location done",
-                hotels: hotelsInfor
-            })
+            await ServiceHotel.getAll((information) => {
+                let { status, message, hotels, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotels});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            });
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -20,20 +25,23 @@ class ControllerHotel {
         }
     }
 
-    // TÌM HOTEL THEO ID CHỈ ĐỊNH
+    // TRUY XUẤT HOTEL THEO ID
     getHotelById = async (req, res, next) => {
         try {
             let { hotel } = req.params;
-            let hotelInfor = await ModelHotel.findById(hotel).populate(["rooms"]).exec();
-            res.status(200).json({
-                status: true,
-                message: "Get location done",
-                hotel: hotelInfor
+            await ServiceHotel.getById(hotel, (information) => {
+                let { status, message, hotel, error } = information;
+                if(status) {
+                    res.status(200).json({status: true, message, hotel});
+
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
             })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
-            res.status(500).json({status: false, message: 'Internal server failed'});
+            res.status(500).json({status: false, message: 'Internal server failed'});;
         }
     }
 
