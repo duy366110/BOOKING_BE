@@ -1,6 +1,6 @@
 const ModelUser = require("../model/model-user");
 const ModelHotel = require("../model/model-hotel");
-const JWT = require("../util/jwt");
+const JWT = require("../util/util.jwt");
 
 class MiddlewareBooking {
 

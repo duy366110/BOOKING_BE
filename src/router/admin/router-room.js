@@ -11,7 +11,7 @@ router.get("/:limit/:start", ControllerRoom.getRooms);
 router.get("/amount", ControllerRoom.getAmount);
 
 // ROUTER ADMIN TÌM ROOM THEO ID
-router.get("/:room", ControllerRoom.getRoombyId);
+router.get("/:room", ControllerRoom.getRoomById);
 
 // ROUTER ADMIN LẤY DANH SÁCH ROOM
 router.get("/", ControllerRoom.getRoomAll);

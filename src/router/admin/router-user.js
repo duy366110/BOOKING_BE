@@ -4,16 +4,16 @@ const { body } = require('express-validator');
 const ControllerUser = require('../../controller/admin/controller-user');
 
 // ROUTER LẤY VỀ SỐ LƯỢNG USER.
-router.get("/amount", ControllerUser.getAmoutnUser);
+router.get("/amount", ControllerUser.getAmount);
 
 // ROUTER TRẢ VỀ USER VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-router.get("/:limit/:start", ControllerUser.getLimitUser);
+router.get("/:limit/:start", ControllerUser.getUsers);
 
 // ROUTER TÌM USẺ THEO ID   
-router.get("/:user", ControllerUser.findUserById);
+router.get("/:user", ControllerUser.getUserById);
 
 // ROUTER ADMIN TÌM TẤT CẢ ACCOUNT HIỆN CÓ
-router.get("/", ControllerUser.findUsers);
+router.get("/", ControllerUser.getUserAll);
 
 // ROUTER ADMIN TẠO MỚI ACCOUNT USER.
 router.post('/', [

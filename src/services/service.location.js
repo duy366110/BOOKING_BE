@@ -110,7 +110,7 @@ class ServiceLocation {
             }
 
             await location.model.deleteOne();
-            cb({status: true, message: 'Update location successfully'});
+            cb({status: true, message: 'Delete location successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI

@@ -170,7 +170,7 @@ class ServiceCategory {
 
             // XOÁ HOTEL
             await hotel.model.deleteOne();
-            cb({status: true, message: 'Update category successfully'});
+            cb({status: true, message: 'Delete hotel successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI

@@ -110,7 +110,7 @@ class ServiceCategory {
             }
 
             await category.model.deleteOne();
-            cb({status: true, message: 'Update category successfully'});
+            cb({status: true, message: 'Delete category successfully'});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI

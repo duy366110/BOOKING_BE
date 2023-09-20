@@ -1,7 +1,7 @@
 const ModelUser = require("../../model/model-user");
 const ModelRole = require("../../model/model-role");
-const Bcrypt = require("../../util/bcrypt");
-const jwt = require("../../util/jwt");
+const Bcrypt = require("../../util/util.bcrypt");
+const jwt = require("../../util/util.jwt");
 const { validationResult } = require("express-validator");
 
 class ControllerUser {
