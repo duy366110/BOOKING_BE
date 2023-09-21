@@ -2,16 +2,17 @@ const router = require('express').Router();
 const { body } = require("express-validator");
 const MiddlewareUser = require("../../middleware/client/middleware-user");
 const MiddlewareBooking = require("../../middleware/middleware-booking");
+const MiddlewareAuthorization = require("../../middleware/middleware.authorization");
 const ControllerBooking = require("../../controller/client/controller-booking");
 
 //ROUTER THỰC HIỆN LẤY THÔNG TRANSACTION BOOKING TRẢ VỀ PHÍA CLIENT
 router.get("/", MiddlewareUser.findUserByToken, ControllerBooking.userFindHistoryTransactionBooking);
 
 // ROUTER KHÁCH HÀNG THỰC HIỆN BOOKING HOTEL - ROOM
-router.post("/hotel/room", [
+router.post("/room", [
     body('hotel').notEmpty().withMessage('Hotel ID not empty'),
     body('room').notEmpty().withMessage('Room ID not empty'),
-    body('token').notEmpty().withMessage('Toke user not empty'),
+    // body('token').notEmpty().withMessage('Toke user not empty'),
     body('fullName').notEmpty().withMessage('Full user name not empty'),
     body('email').notEmpty().withMessage('Email user not empty'),
     body('phone').notEmpty().withMessage('Phone user not empty'),
@@ -26,8 +27,8 @@ router.post("/hotel/room", [
         return true;
     })
 ],
-MiddlewareBooking.findUserBooking,
-MiddlewareBooking.findHotelRoomBooking,
-ControllerBooking.userBookingRoom);
+MiddlewareAuthorization.verifyToken,
+MiddlewareBooking.findInformationHotelAndRoomBeforeBooking,
+ControllerBooking.booking);
 
 module.exports = router;

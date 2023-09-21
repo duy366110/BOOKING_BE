@@ -1,5 +1,6 @@
 const ModelBooking = require("../../model/model-booking");
 const { validationResult } = require('express-validator');
+const ServiceBooking = require("../../services/service.booking");
 
 class ControllerBooking {
 
@@ -27,7 +28,7 @@ class ControllerBooking {
     }
 
     // KHÁCH HÀNG ĐẶT PHÒNG
-    userBookingRoom = async (req, res, next) => {
+    async booking(req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -35,35 +36,29 @@ class ControllerBooking {
 
         } else {
             try {
-                let { fullName, email, phone, card, payment, startDate, endDate, quantityDateBooking, roomNumbers } = req.body;
-                let { user, hotel, room } = req;
-    
-                if(user && hotel && room) {
-                    // TÍN GIÁ TIỀN CHO KHÁCH HÀNG
+                let { user, hotel } = req;
+                if(user && hotel) {
+                    let room = hotel.rooms[0]
+                    let { fullName, email, phone, card, payment, startDate, endDate, quantityDateBooking, roomNumbers } = req.body;
                     let price = (Number(room.price.toString()) * roomNumbers.length) * quantityDateBooking;
-    
-                    // THỰC HIỆN LUW THÔNG TIN
-                    let bookingInfor = await ModelBooking.create({
-                        fullName, user,
-                        phone, email,
-                        startDate: new Date(startDate),
-                        endDate: new Date(endDate),
-                        price, payment,
-                        hotel, room,
-                        roomNumbers
+
+                    await ServiceBooking.create({
+                        fullName, email, phone,
+                        card, payment, startDate,
+                        endDate, quantityDateBooking, roomNumbers, price
+                    }, user, hotel, (information) => {
+                        let { status, message, erro } = information;
+                        
+                        if(status) {
+                            res.status(200).json({status: true, message});
+        
+                        } else {
+                            res.status(406).json({status: false, message, error});
+                        }
                     })
-    
-                    // TẠO LIÊN KẾT GIỮA BÔKING VÀ USER 
-                    user.bookings.push(bookingInfor);
-                    await user.save();
-    
-                    // LƯU THÔNG TIN BOOKING THÀNH CÔNG
-                    res.status(200).json({status: true, message: 'User booking successfully'});
-    
+
                 } else {
-                    // THIẾU THÔNG TIN USER - HOTEL - ROOM KHÔNG THỰC HIÊN CHỨC NĂNG
                     res.status(404).json({status: false, message: 'Missing information not booking hotel'});
-    
                 }
     
             } catch (error) {
