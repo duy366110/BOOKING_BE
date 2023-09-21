@@ -11,15 +11,15 @@ class ControllerBooking {
         try {
             let { user } = req;
 
-            let bookings = user.bookings.map((elm) => elm._id);
-            let bookingInfor = await ModelBooking.find({_id: {$in: bookings}}).populate(['hotel', 'room']).exec();
+            await ServiceBooking.getBookingTransactionOfUser(user, (information) => {
+                let { status, message, bookings, error} = information;
+                if(status) {
+                    res.status(200).json({status: true, message, bookings});
 
-            res.status(200).json({
-                status: true,
-                message: "Find booking successfully",
-                user,
-                bookings: bookingInfor
-            });
+                } else {
+                    res.status(406).json({status: false, message, error});
+                }
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI

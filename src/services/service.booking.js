@@ -1,51 +1,17 @@
 "use strict"
+const mongodb = require("mongodb");
 const ModelBooking = require("../model/model-booking");
+const ObjectId = mongodb.ObjectId;
 
 class ServiceBooking {
 
     constructor() { }
 
-    // LẤY DANH SÁCH LOCATION
-    async getLimit(limit, start, cb) {
+    // TRUY XUẤT DANH SÁCH BOOKING TRANSACTION CỦA USER
+    async getBookingTransactionOfUser(user = {}, cb) {
         try {
-            let categories = await ModelBooking.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
-            cb({status: true, message: 'Get categories successfully', categories});
-
-        } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
-            cb({status: false, message: 'Method failed', error});
-        }
-    }
-
-    // LẤY DANH SÁCH LOCATION
-    async getAll(cb) {
-        try {
-            let categories = await ModelBooking.find({}).lean();
-            cb({status: true, message: 'Get categories successfully', categories});
-
-        } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
-            cb({status: false, message: 'Method failed', error});
-        }
-    }
-
-    // LẤY DANH PHẦN TỬ THEO ID
-    async getById(id, cb) {
-        try {
-            let category = await ModelBooking.findById(id).lean();
-            cb({status: true, message: 'Get category category successfully', category});
-
-        } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
-            cb({status: false, message: 'Method failed', error});
-        }
-    }
-
-    // LẤY SỐ LƯỢNG CATEGORY
-    async getAmount(cb) {
-        try {
-            let amount = await ModelBooking.find({}).count().lean();
-            cb({status: true, message: 'Get amount category successfully', amount});
+            let bookings = await ModelBooking.find({user: {$eq: new ObjectId(user._id)}}).sort({createDate: "desc"}).populate(['hotel', 'room']).lean();
+            cb({status: true, message: 'Get booking transaction successfully', bookings});
 
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
@@ -73,6 +39,8 @@ class ServiceBooking {
 
             if(bookingInfor) {
                 user.bookings.push(bookingInfor);
+                await user.save();
+
                 cb({status: true, message: 'Create booking successfully'});
 
             } else {
