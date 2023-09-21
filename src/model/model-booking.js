@@ -42,9 +42,17 @@ const ModelTransaction = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'hotels'
     },
+    card: {
+        type: String,
+        default: ''
+    },
     room: {
         type: Schema.Types.ObjectId,
         ref: 'rooms'
+    },
+    quantityDateBooking: {
+        type: Number,
+        default: 0
     },
     createDate: {
         type: Date,

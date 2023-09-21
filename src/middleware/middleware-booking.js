@@ -1,6 +1,7 @@
 const ModelUser = require("../model/model-user");
 const ModelHotel = require("../model/model-hotel");
 const JWT = require("../util/util.jwt");
+const ServiceHotel = require("../services/service.hotel");
 
 class MiddlewareBooking {
 
@@ -33,16 +34,18 @@ class MiddlewareBooking {
             }
         }
 
-        // TÌM THÔNG TIN HOTEL - RÔM CẦN BOOKING
-        findHotelRoomBooking = async (req, res, next) => {
+        // TÌM THÔNG TIN HOTEL - ROOM CẦN BOOKING
+        async findInformationHotelAndRoomBeforeBooking(req, res, next) {
             try {
                 let { hotel, room } = req.body;
-                let hotelInfor = await ModelHotel.findById(hotel).populate(['rooms']).exec();
-                let roomInfor = hotelInfor.rooms.find((roomHotel) => roomHotel._id.toString() === room);
+                await ServiceHotel.getHotelWithRoomById(hotel, room, (information) => {
+                    let { status, message, hotel } = information;
 
-                req.hotel = hotelInfor;
-                req.room = roomInfor;
-                next();
+                    if(status) {
+                        req.hotel = hotel;
+                        next();
+                    }
+                })
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI

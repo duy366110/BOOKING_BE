@@ -1,5 +1,6 @@
 "use strict"
 const ModelUser = require("../model/model-user");
+const UtilJwt = require("../util/util.jwt");
 const UtilBcrypt = require("../util/util.bcrypt");
 
 class ServiceUser {
@@ -118,6 +119,22 @@ class ServiceUser {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
             cb({status: false, message: 'Method failed', error});
         }
+    }
+
+    // VERIFY USER THÔNG QUA TOKEN - AUTHENTIZATION
+    async verifyAuthorization(token = '', cb) {
+        UtilJwt.verify(token.trim(), async (information) => {
+            let { status, message, infor } = information;
+
+            if(status) {
+                let user = await ModelUser.findOne({email: {$eq: infor.email}}).populate(['bookings']).exec();
+                cb({status: true, message, user});
+
+            } else {
+                // TOKEN KHÔNG HỢP LỆ
+                cb({status: false, message});
+            }
+        })
     }
 
     // CẬP NHẬT USER
