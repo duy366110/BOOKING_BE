@@ -10,22 +10,27 @@ class MiddlewareAuthorization {
         try {
             let authorization = req.get("authorization");
             authorization = authorization.replace('Bearer ', '');
-            ServiceUser.verifyAuthorization(authorization, (information) => {
-                let {status, message, user} = information;
 
-                if(status) {
-                    req.user = user;
-                    next();
+            if(authorization && authorization.length > 10) {
+                ServiceUser.verifyAuthorization(authorization, (information) => {
+                    let {status, message, user} = information;
+    
+                    if(status) {
+                        req.user = user;
+                        return next();
+    
+                    } else {
+                        return res.status(406).json({status: false, message});
+                    }
+                })
 
-                } else {
-                    res.status(406).json({status: false, message});
-                }
-
-            })
+            } else {
+                return res.status(406).json({status: false, message: 'Token invalid'});
+            }
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
-            res.status(500).json({status: false, message: 'Internal server failed'});
+            return res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 

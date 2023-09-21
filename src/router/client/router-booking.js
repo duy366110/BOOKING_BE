@@ -6,13 +6,14 @@ const MiddlewareAuthorization = require("../../middleware/middleware.authorizati
 const ControllerBooking = require("../../controller/client/controller-booking");
 
 //ROUTER THỰC HIỆN LẤY THÔNG TRANSACTION BOOKING TRẢ VỀ PHÍA CLIENT
-router.get("/", MiddlewareUser.findUserByToken, ControllerBooking.userFindHistoryTransactionBooking);
+router.get("/transaction",
+    MiddlewareAuthorization.verifyToken,
+    ControllerBooking.userFindHistoryTransactionBooking);
 
 // ROUTER KHÁCH HÀNG THỰC HIỆN BOOKING HOTEL - ROOM
 router.post("/room", [
     body('hotel').notEmpty().withMessage('Hotel ID not empty'),
     body('room').notEmpty().withMessage('Room ID not empty'),
-    // body('token').notEmpty().withMessage('Toke user not empty'),
     body('fullName').notEmpty().withMessage('Full user name not empty'),
     body('email').notEmpty().withMessage('Email user not empty'),
     body('phone').notEmpty().withMessage('Phone user not empty'),

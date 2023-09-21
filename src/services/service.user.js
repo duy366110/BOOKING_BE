@@ -125,8 +125,8 @@ class ServiceUser {
     async verifyAuthorization(token = '', cb) {
         UtilJwt.verify(token.trim(), async (information) => {
             let { status, message, infor } = information;
-
-            if(status) {
+            
+            if(status && infor) {
                 let user = await ModelUser.findOne({email: {$eq: infor.email}}).populate(['bookings']).exec();
                 cb({status: true, message, user});
 
