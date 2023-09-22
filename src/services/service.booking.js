@@ -7,6 +7,30 @@ class ServiceBooking {
 
     constructor() { }
 
+    // TRUY XUẤT SỐ LƯỢNG BOOKING
+    async getAmount(cb) {
+        try {
+            let amount = await ModelBooking.find({}).count().lean();
+            cb({status: true, message: 'Get amount booking successfully', amount});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // LẤY DANH SÁCH BOOKING
+    async getLimit(limit, start, cb) {
+        try {
+            let bookings = await ModelBooking.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
+            cb({status: true, message: 'Get bookings successfully', bookings});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // TRUY XUẤT DANH SÁCH BOOKING TRANSACTION CỦA USER
     async getBookingTransactionOfUser(user = {}, cb) {
         try {

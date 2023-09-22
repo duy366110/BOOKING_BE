@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { body } = require("express-validator");
-const MiddlewareUser = require("../../middleware/client/middleware-user");
 const MiddlewareBooking = require("../../middleware/middleware-booking");
 const MiddlewareAuthorization = require("../../middleware/middleware.authorization");
 const ControllerBooking = require("../../controller/client/controller-booking");

@@ -5,6 +5,6 @@ const ControllerBooking = require("../../controller/admin/controller-booking");
 router.get("/:limit/:start", ControllerBooking.getBooking);
 
 // ROUTẺ LẤY SỐ LƯỢNG GIAO DỊCH BÔKING PHÂN TRANG
-router.get("/amount", ControllerBooking.getBookingAmount);
+router.get("/amount", ControllerBooking.getAmount);
 
 module.exports = router;
