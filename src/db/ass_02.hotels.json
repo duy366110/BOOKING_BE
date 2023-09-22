@@ -20,9 +20,6 @@
   "rooms": [
     {
       "$oid": "650aad768cf1ed3536ea8d07"
-    },
-    {
-      "$oid": "650ab199cebbc165ae47385b"
     }
   ],
   "createDate": {
@@ -32,4 +29,41 @@
     "$date": "2023-09-20T08:28:25.740Z"
   },
   "__v": 2
+},
+{
+  "_id": {
+    "$oid": "650d1410d3d46340736fccf4"
+  },
+  "name": "Amber Design Residence",
+  "city": {
+    "$oid": "650d139bd3d46340736fcce8"
+  },
+  "type": {
+    "$oid": "650aac278cf1ed3536ea8c98"
+  },
+  "address": "ul. Św. Marka 35, Old Town, 31-024 Krakow, Poland ",
+  "distance": "10km",
+  "images": [
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355917/test/myeenpeb2ctgduief3zr.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355917/test/usml2wohi6xapmb8brxb.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355920/test/lme3y3c1c06a4mkwgrad.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355917/test/uukmilmiy9oiy2exf0lq.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355917/test/uijmj0z69fzycltmms73.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355917/test/uoxjsffi8xdgmbog8lpk.jpg"
+  ],
+  "desc": "Many of Krakow’s cultural attractions, including St Mary’s Basilica and the Cloth Hall, are within 1640 feet of the accommodations. Krakow Main Station is also only a 6-minute walk away.",
+  "rating": 0,
+  "featured": false,
+  "rooms": [
+    {
+      "$oid": "650d540a3de4b17d83ed4943"
+    }
+  ],
+  "createDate": {
+    "$date": "2023-09-22T04:12:00.417Z"
+  },
+  "updateDate": {
+    "$date": "2023-09-22T04:12:00.417Z"
+  },
+  "__v": 1
 }]

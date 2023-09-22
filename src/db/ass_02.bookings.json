@@ -1,1 +1,82 @@
-[]
+[{
+  "_id": {
+    "$oid": "650c12f99851fe27a0183e8f"
+  },
+  "fullName": "Tran Khanh Pham",
+  "user": {
+    "$oid": "650ac630df76bec6aded0fa5"
+  },
+  "phone": "035 243 8729",
+  "email": "khanhpham@gmail.com",
+  "startDate": {
+    "$date": "2023-09-20T17:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-09-24T17:00:00.000Z"
+  },
+  "price": {
+    "$numberDecimal": "2250"
+  },
+  "payment": "MasterCard",
+  "status": "Booked",
+  "hotel": {
+    "$oid": "650aad298cf1ed3536ea8cf4"
+  },
+  "card": "123456789",
+  "room": {
+    "$oid": "650aad768cf1ed3536ea8d07"
+  },
+  "quantityDateBooking": 5,
+  "roomNumbers": [
+    "12",
+    "15",
+    "16"
+  ],
+  "createDate": {
+    "$date": "2023-09-21T09:55:05.084Z"
+  },
+  "updateDate": {
+    "$date": "2023-09-21T09:55:05.084Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "650d54fb3de4b17d83ed4994"
+  },
+  "fullName": "Tran Khanh Pham",
+  "user": {
+    "$oid": "650ac630df76bec6aded0fa5"
+  },
+  "phone": "035 243 8729",
+  "email": "khanhpham@gmail.com",
+  "startDate": {
+    "$date": "2023-09-21T17:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-09-28T17:00:00.000Z"
+  },
+  "price": {
+    "$numberDecimal": "2000"
+  },
+  "payment": "MasterCard",
+  "status": "Booked",
+  "hotel": {
+    "$oid": "650d1410d3d46340736fccf4"
+  },
+  "card": "123456789",
+  "room": {
+    "$oid": "650d540a3de4b17d83ed4943"
+  },
+  "quantityDateBooking": 8,
+  "roomNumbers": [
+    "12"
+  ],
+  "createDate": {
+    "$date": "2023-09-22T08:48:59.520Z"
+  },
+  "updateDate": {
+    "$date": "2023-09-22T08:48:59.520Z"
+  },
+  "__v": 0
+}]

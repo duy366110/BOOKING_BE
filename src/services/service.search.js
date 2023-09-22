@@ -20,10 +20,10 @@ class ServiceSearch {
                             path: 'rooms',
                             match: {
                                 price: {
-                                    $gte: information.minPrice? information.minPrice : 0,
-                                    $lte: information.maxPrice? information.maxPrice : 10000
+                                    $gte: information.minPrice? Number(information.minPrice) : 0,
+                                    $lte: information.maxPrice? Number(information.maxPrice) : 10000
                                 },
-                                maxPeople: { $gte: quantityPeople },
+                                maxPeople: { $gte: Number(quantityPeople) },
                             }
                         }
                     ]
