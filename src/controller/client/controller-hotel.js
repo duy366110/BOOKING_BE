@@ -1,5 +1,4 @@
 "use strict"
-const ModelHotel = require("../../model/model-hotel");
 const ServiceHotel = require("../../services/service.hotel");
 
 class ControllerHotel {

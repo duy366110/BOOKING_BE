@@ -24,7 +24,7 @@ class ServiceCategory {
     // LẤY DANH SÁCH HOTEL
     async getAll(cb) {
         try {
-            let hotels = await ModelHotel.find({}).lean();
+            let hotels = await ModelHotel.find({}).populate(['city']).lean();
             cb({status: true, message: 'Get hotels successfully', hotels});
 
         } catch (error) {
