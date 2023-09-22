@@ -1,6 +1,7 @@
 "use strict"
 const mongodb = require("mongodb");
 const ModelHotel = require("../model/model-hotel");
+const ModelLocation = require("../model/model-location");
 const UtilCloudinary = require("../util/util.cloudinary");
 const ConfigEnv = require("../configs/config.env");
 const ObjectId = mongodb.ObjectId;
