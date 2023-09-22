@@ -18,18 +18,25 @@
   },
   "username": "Khanh Pham",
   "fullname": "Tran Khanh Pham",
-  "email": "khaanhpham@gmail.com",
+  "email": "khanhpham@gmail.com",
   "password": "$2a$12$uWwM8t3qLqH.4eS5h5Uo.O9Es4c1WUvb.lGAnlLtiJBCNKKYeFsHq",
   "phonenumber": "035 243 8729",
   "role": {
     "$oid": "650ac5366ace988997b589f3"
   },
-  "bookings": [],
+  "bookings": [
+    {
+      "$oid": "650c12f99851fe27a0183e8f"
+    },
+    {
+      "$oid": "650d54fb3de4b17d83ed4994"
+    }
+  ],
   "createDate": {
     "$date": "2023-09-20T10:15:12.152Z"
   },
   "updateDate": {
     "$date": "2023-09-20T10:15:12.152Z"
   },
-  "__v": 0
+  "__v": 2
 }]

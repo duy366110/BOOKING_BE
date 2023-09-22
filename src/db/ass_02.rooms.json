@@ -35,35 +35,37 @@
 },
 {
   "_id": {
-    "$oid": "650ab199cebbc165ae47385b"
+    "$oid": "650d540a3de4b17d83ed4943"
   },
-  "title": "Riad Ciel d'Orient",
+  "title": "Bed room 01 - Amber Design Residence",
   "price": {
-    "$numberDecimal": "150"
+    "$numberDecimal": "250"
   },
   "maxPeople": 2,
-  "desc": "Breakfast is available every morning, and includes continental, vegetarian and vegan options.",
+  "desc": "Many of Krakow’s cultural attractions, including St Mary’s Basilica and the Cloth Hall, are within 1640 feet of the accommodations. Krakow Main Station is also only a 6-minute walk away.",
   "roomNumbers": [
     "12",
+    "14",
     "15",
+    "16",
     "17"
   ],
   "images": [
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199636/test/n1awaguf71xed7oh51gb.jpg",
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199640/test/mbl1nfgu2qxgqk0hchuy.jpg",
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199636/test/x5ku0rln0o5mlcq6ol3u.jpg",
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199636/test/xdwvwicpmg8aoaikecew.jpg",
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199636/test/vi22blaw9ejpvbdmrrcn.jpg",
-    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695199636/test/cr2qpmheomdjj0awfofi.jpg"
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372293/test/hmurtsc4qjbswttfl6wg.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372298/test/dxbvt4ttpqcamedxa6wt.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372293/test/vhyvijdvdjumhcahrst3.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372293/test/j502oi9affllajlqyfgk.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372294/test/nj4ay30mzitowwjar1ss.jpg",
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695372295/test/cmrc6zcrbs9cz1nnv5ex.jpg"
   ],
   "createDate": {
-    "$date": "2023-09-20T08:47:21.317Z"
+    "$date": "2023-09-22T08:44:58.717Z"
   },
   "updateDate": {
-    "$date": "2023-09-20T08:47:21.317Z"
+    "$date": "2023-09-22T08:44:58.717Z"
   },
   "__v": 0,
   "hotel": {
-    "$oid": "650aad298cf1ed3536ea8cf4"
+    "$oid": "650d1410d3d46340736fccf4"
   }
 }]

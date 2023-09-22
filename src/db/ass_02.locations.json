@@ -19,4 +19,26 @@
     "$date": "2023-09-20T08:22:32.404Z"
   },
   "__v": 3
+},
+{
+  "_id": {
+    "$oid": "650d139bd3d46340736fcce8"
+  },
+  "title": "Hanoi",
+  "desc": "",
+  "images": [
+    "https://res.cloudinary.com/doxnf7bp0/image/upload/v1695355803/test/erfvycsykvumylptzeda.jpg"
+  ],
+  "collections": [
+    {
+      "$oid": "650d1410d3d46340736fccf4"
+    }
+  ],
+  "createDate": {
+    "$date": "2023-09-22T04:10:03.389Z"
+  },
+  "updateDate": {
+    "$date": "2023-09-22T04:10:03.389Z"
+  },
+  "__v": 1
 }]
